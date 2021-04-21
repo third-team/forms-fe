@@ -34,8 +34,12 @@ export default function Field() {
 			))}
 
 			<div className='button-line'>
-				<input type='button' value='Add option' className='button button-add-option' onClick={addOption} />
-				<input type='button' value='Delete field' className='button' />
+				<button type='button' className='button button-add-option' onClick={addOption}>
+					Add option
+				</button>
+				<button type='button' className='button'>
+					Delete field
+				</button>
 			</div>
 		</div>
 	);

@@ -3,7 +3,9 @@ import './Header.scss';
 export default function Header() {
 	return (
 		<header>
-			<input type='button' value='Sign in' className='button' />
+			<button type='button' className='button'>
+				Sign in
+			</button>
 		</header>
 	);
 }

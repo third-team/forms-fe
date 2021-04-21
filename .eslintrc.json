@@ -26,6 +26,9 @@
 		"jsx-quotes": ["warn", "prefer-single"],
 		"object-curly-newline": "off",
 		"no-plusplus": "off",
+		"max-len": ["warn", { "code": 140 }],
+		"implicit-arrow-linebreak": "off",
+		"function-paren-newline": "off",
 
 		"react/prop-types": "off",
 		"react/react-in-jsx-scope": "off",
