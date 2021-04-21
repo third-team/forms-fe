@@ -1,0 +1,42 @@
+.field {
+	display: flex;
+	flex-direction: column;
+
+	margin-bottom: 25px;
+	padding: 25px;
+
+	background-color: #f8f9fa;
+
+	border: solid #dee2e6 2px;
+	border-radius: 10px;
+
+	box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.3);
+}
+
+.name-select-line {
+	display: flex;
+	justify-content: space-between;
+
+	margin-bottom: 20px;
+}
+
+.field-name {
+	font-size: 24px;
+	width: 45%;
+}
+
+.answer-type-selector {
+	font-size: 24px;
+	width: 45%;
+
+	border: 0;
+}
+
+.button-line {
+	display: flex;
+}
+
+.button-add-option {
+	margin-left: 0;
+	margin-right: auto;
+}

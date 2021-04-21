@@ -1,0 +1,20 @@
+.option {
+	display: flex;
+	align-items: center;
+
+	margin-left: 5px;
+	margin-bottom: 20px;
+}
+
+.option-input {
+	border: 0;
+	border-bottom: 2px solid black;
+
+	background-color: #f8f9fa;
+
+	font-size: 24px;
+}
+
+.option-input:focus {
+	outline: none;
+}
