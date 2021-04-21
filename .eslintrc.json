@@ -25,6 +25,7 @@
 		"linebreak-style": "off",
 		"jsx-quotes": ["warn", "prefer-single"],
 		"object-curly-newline": "off",
+		"no-plusplus": "off",
 
 		"react/prop-types": "off",
 		"react/react-in-jsx-scope": "off",
