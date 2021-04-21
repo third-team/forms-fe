@@ -12,6 +12,8 @@ export default function Field() {
 
 	const changeAnswerType = (event) => {
 		setAnswerType(event.target.value);
+
+		setOptions((prevList) => prevList.map((item) => ({ ...item, correctness: false })));
 	};
 
 	const addOption = () => {
@@ -24,13 +26,13 @@ export default function Field() {
 				<input className='field-name' placeholder='Name of field...' />
 
 				<select className='answer-type-selector' size='large' defaultValue='Choose...' onChange={changeAnswerType}>
-					<option value='Checkbox'>Checkbox</option>
-					<option value='Radiobutton'>Radiobutton</option>
+					<option value='checkbox'>Checkbox</option>
+					<option value='radio'>Radiobutton</option>
 				</select>
 			</div>
 
 			{options.map((item, index) => (
-				<Option key={item.id} answerType={answerType} index={index} setOptions={setOptions} />
+				<Option key={item.id} answerType={answerType} index={index} correctness={item.correctness} setOptions={setOptions} />
 			))}
 
 			<div className='button-line'>
