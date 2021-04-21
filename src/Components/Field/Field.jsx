@@ -1,12 +1,13 @@
 import { useState } from 'react';
 
+import { v1 as uuid } from 'uuid';
+
 import './Field.scss';
 
 import Option from './Option';
 
 export default function Field() {
-	const [optionIterator] = useState({ id: 0 });
-	const [options, setOptions] = useState([{ text: '', id: 0, correctness: false }]);
+	const [options, setOptions] = useState([{ id: uuid(), text: '', correctness: false }]);
 	const [answerType, setAnswerType] = useState('checkbox');
 
 	const changeAnswerType = (event) => {
@@ -14,8 +15,7 @@ export default function Field() {
 	};
 
 	const addOption = () => {
-		optionIterator.id += 1;
-		setOptions((prevList) => [...prevList, { text: '', id: optionIterator.id }]);
+		setOptions((prevList) => [...prevList, { id: uuid(), text: '', correctness: false }]);
 	};
 
 	return (
