@@ -29,8 +29,8 @@ export default function Field() {
 				</select>
 			</div>
 
-			{options.map((item) => (
-				<Option key={item.id} answerType={answerType} />
+			{options.map((item, index) => (
+				<Option key={item.id} answerType={answerType} index={index} setOptions={setOptions} />
 			))}
 
 			<div className='button-line'>

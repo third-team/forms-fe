@@ -1,4 +1,6 @@
 .option {
+	width: 45%;
+
 	display: flex;
 	align-items: center;
 
@@ -7,6 +9,8 @@
 }
 
 .option-input {
+	width: 85%;
+
 	border: 0;
 	border-bottom: 2px solid black;
 
@@ -16,5 +20,26 @@
 }
 
 .option-input:focus {
+	outline: none;
+}
+
+.delete-button {
+	width: 30px;
+	height: 30px;
+
+	padding: 0;
+	margin: 0 auto;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	background-color: #f8d7da;
+
+	border: 1px solid gray;
+	border-radius: 15px;
+}
+
+.delete-button:focus {
 	outline: none;
 }
