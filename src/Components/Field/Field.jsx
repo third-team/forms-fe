@@ -19,6 +19,10 @@ export default function Field({ fieldIndex: index, name, answerType, setFields }
 		setFields((prevState) => prevState.map((item, ind) => (index === ind ? { ...item, name: event.target.value } : item)));
 	};
 
+	const removeField = () => {
+		setFields((prevList) => prevList.filter((_, ind) => ind !== index));
+	};
+
 	const addOption = () => {
 		setOptions((prevList) => [...prevList, { id: uuid(), text: '', correctness: false }]);
 	};
@@ -42,7 +46,7 @@ export default function Field({ fieldIndex: index, name, answerType, setFields }
 				<button type='button' className='button button-add-option' onClick={addOption}>
 					Add option
 				</button>
-				<button type='button' className='button'>
+				<button type='button' className='button' onClick={removeField}>
 					Delete field
 				</button>
 			</div>

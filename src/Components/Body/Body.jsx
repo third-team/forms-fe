@@ -9,13 +9,17 @@ import Field from '../Field/Field';
 export default function Body() {
 	const [fields, setFields] = useState([{ id: uuid(), name: '', answerType: 'checkbox' }]);
 
+	const addField = () => {
+		setFields((prevList) => [...prevList, { id: uuid(), name: '', answerType: 'checkbox' }]);
+	};
+
 	return (
 		<div className='body'>
 			{fields.map((item, ind) => (
 				<Field fieldIndex={ind} name={item.name} answerType={item.answerType} setFields={setFields} key={item.id} />
 			))}
 
-			<input type='button' value='Add field' className='button' />
+			<input type='button' value='Add field' className='button' onClick={addField} />
 		</div>
 	);
 }
