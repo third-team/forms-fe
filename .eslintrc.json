@@ -29,9 +29,11 @@
 		"max-len": ["warn", { "code": 140 }],
 		"implicit-arrow-linebreak": "off",
 		"function-paren-newline": "off",
+		"jsx-a11y/label-has-associated-control": "off",
 
 		"react/prop-types": "off",
 		"react/react-in-jsx-scope": "off",
-		"react/jsx-indent": [2, "tab"]
+		"react/jsx-indent": [2, "tab"],
+		"react/jsx-indent-props": ["warn", "tab"]
 	}
 }
