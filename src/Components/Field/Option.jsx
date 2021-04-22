@@ -1,6 +1,6 @@
 import './Option.scss';
 
-export default function Option({ answerType, index, correctness, setOptions }) {
+export default function Option({ answerType, optionIndex: index, correctness, setOptions }) {
 	const removeOption = () => {
 		setOptions((prevList) => prevList.filter((_, ind) => ind !== index));
 	};
