@@ -5,6 +5,13 @@ body {
 	background-color: #d2f4ea;
 }
 
+#root {
+	height: 100vh;
+
+	display: flex;
+	flex-direction: column;
+}
+
 .button {
 	height: 40px;
 

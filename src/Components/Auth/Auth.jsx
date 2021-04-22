@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import axios from 'axios';
+
 import './Auth.scss';
 
 export default function Auth({ setLoginState }) {
@@ -12,13 +14,31 @@ export default function Auth({ setLoginState }) {
 		setAuthType(authType === 'login' ? 'register' : 'login');
 	};
 
-	const handleSubmit = (event) => {
-		console.log('kukesb');
+	const handleSubmit = () => {
+		if (authType === 'register' && password !== passwordChecking) {
+			console.log('Passwords fields are not equal!');
+			return;
+		}
+
+		axios
+			.post(`https://third-team-forms.herokuapp.com/${authType}`, { email, password })
+			.then((response) => {
+				console.log(response);
+
+				if (response.status === 200) {
+					localStorage.token = response.data.token;
+
+					setLoginState(true);
+				}
+			})
+			.catch((error) => {
+				console.log(error.response.data.message);
+			});
 	};
 
 	return (
 		<div className='auth-container'>
-			<form method='post' className='auth-form'>
+			<form className='auth-form'>
 				<label htmlFor='email'>
 					Email
 					<input
@@ -28,7 +48,7 @@ export default function Auth({ setLoginState }) {
 						className='data-input'
 						id='email'
 						onChange={(event) => {
-							setPassword(event.target.value);
+							setEmail(event.target.value);
 						}}
 					/>
 				</label>
@@ -42,7 +62,7 @@ export default function Auth({ setLoginState }) {
 						className='data-input'
 						id='password'
 						onChange={(event) => {
-							setPasswordChecking(event.target.value);
+							setPassword(event.target.value);
 						}}
 					/>
 				</label>
@@ -51,23 +71,23 @@ export default function Auth({ setLoginState }) {
 					<label htmlFor='passwordChecking'>
 						Repeat password:
 						<input
-							type='passwordChecking'
+							type='password'
 							placeholder='Your password...'
 							name='passwordChecking'
 							className='data-input'
 							id='passwordChecking'
 							onChange={(event) => {
-								setEmail(event.target.value);
+								setPasswordChecking(event.target.value);
 							}}
 						/>
 					</label>
 				)}
-				<button type='button' onClick={handleSubmit}>
+				<button type='button' className='button auth-buttons submit-button' onClick={handleSubmit}>
 					Submit
 				</button>
 			</form>
 
-			<button type='button' onClick={updateAuthType}>
+			<button type='button' className='button auth-buttons' onClick={updateAuthType}>
 				{authType === 'login' ? 'Register' : 'Login'}
 			</button>
 		</div>

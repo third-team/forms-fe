@@ -1,34 +1,27 @@
-import { useState, useEffect, createContext } from 'react';
+import { useState, useEffect } from 'react';
 
 import Header from './Components/Header/Header';
 import Auth from './Components/Auth/Auth';
 import Body from './Components/Body/Body';
 
-export const AppContext = createContext();
+import { AppContext } from './AppContext';
 
 function App() {
 	const [tokenExists, setTokenExists] = useState(false);
 
-	// temporary solution
-
 	useEffect(() => {
-		if (!localStorage.token) {
-			// send request to back-end
-
-			localStorage.token = 'tempToken';
-			// setTokenExists(true);
+		if (localStorage.token) {
+			setTokenExists(true);
 		}
 	});
 
-	if (tokenExists) {
-		return (
-			<AppContext.Provider value={setTokenExists}>
-				<Header />
-				<Body />
-			</AppContext.Provider>
-		);
-	}
-	return <Auth setLoginState={setTokenExists} />;
+	return (
+		<AppContext.Provider value={{ tokenExists, setTokenExists }}>
+			<Header />
+
+			{tokenExists ? <Body /> : <Auth setLoginState={setTokenExists} />}
+		</AppContext.Provider>
+	);
 }
 
 export default App;
