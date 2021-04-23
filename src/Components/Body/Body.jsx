@@ -7,10 +7,10 @@ import './Body.scss';
 import Field from '../Field/Field';
 
 export default function Body() {
-	const [fields, setFields] = useState([{ id: uuid(), name: '', answerType: 'checkbox' }]);
+	const [fields, setFields] = useState([{ id: uuid(), name: '', answerType: 'checkbox', options: [] }]);
 
 	const addField = () => {
-		setFields((prevList) => [...prevList, { id: uuid(), name: '', answerType: 'checkbox' }]);
+		setFields((prevList) => [...prevList, { id: uuid(), name: '', answerType: 'checkbox', options: [] }]);
 	};
 
 	return (

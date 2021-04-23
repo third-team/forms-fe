@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { v1 as uuid } from 'uuid';
 
@@ -7,12 +7,12 @@ import './Field.scss';
 import Option from './Option';
 
 export default function Field({ fieldIndex: index, name, answerType, setFields }) {
-	const [options, setOptions] = useState([{ id: uuid(), text: '', correctness: false }]);
+	const [options, setOptions] = useState([{ id: uuid(), answer: '', isCorrect: false }]);
 
 	const changeAnswerType = (event) => {
 		setFields((prevState) => prevState.map((item, ind) => (index === ind ? { ...item, answerType: event.target.value } : item)));
 
-		setOptions((prevList) => prevList.map((item) => ({ ...item, correctness: false })));
+		setOptions((prevList) => prevList.map((item) => ({ ...item, isCorrect: false })));
 	};
 
 	const updateFieldName = (event) => {
@@ -24,8 +24,12 @@ export default function Field({ fieldIndex: index, name, answerType, setFields }
 	};
 
 	const addOption = () => {
-		setOptions((prevList) => [...prevList, { id: uuid(), text: '', correctness: false }]);
+		setOptions((prevList) => [...prevList, { id: uuid(), answer: '', isCorrect: false }]);
 	};
+
+	useEffect(() => {
+		setFields((prevState) => (prevState ? prevState.map((item, ind) => (index === ind ? { ...item, options } : item)) : prevState));
+	}, [options]);
 
 	return (
 		<div className='field'>
@@ -39,7 +43,7 @@ export default function Field({ fieldIndex: index, name, answerType, setFields }
 			</div>
 
 			{options.map((item, ind) => (
-				<Option key={item.id} answerType={answerType} optionIndex={ind} correctness={item.correctness} setOptions={setOptions} />
+				<Option key={item.id} answerType={answerType} optionIndex={ind} isCorrect={item.isCorrect} setOptions={setOptions} />
 			))}
 
 			<div className='button-line'>
