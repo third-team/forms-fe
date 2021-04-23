@@ -23,8 +23,6 @@ export default function Auth({ setLoginState }) {
 		axios
 			.post(`https://third-team-forms.herokuapp.com/${authType}`, { email, password })
 			.then((response) => {
-				console.log(response);
-
 				if (response.status === 200) {
 					localStorage.token = response.data.token;
 
