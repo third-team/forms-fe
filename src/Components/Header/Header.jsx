@@ -5,22 +5,20 @@ import './Header.scss';
 import { AppContext } from '../../AppContext';
 
 export default function Header() {
-	const { tokenExists, setTokenExists } = useContext(AppContext);
+	const { isLogin, setIsLogin } = useContext(AppContext);
 
 	const handleLoginButton = () => {
-		console.log('kukes');
-
-		if (tokenExists) {
+		if (isLogin) {
 			delete localStorage.token;
 
-			setTokenExists(false);
+			setIsLogin(false);
 		}
 	};
 
 	return (
 		<header>
 			<button type='button' className='button' onClick={handleLoginButton}>
-				{tokenExists ? 'Log out' : 'Log in'}
+				{isLogin ? 'Log out' : 'Log in'}
 			</button>
 		</header>
 	);

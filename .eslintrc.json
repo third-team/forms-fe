@@ -35,6 +35,7 @@
 		"react/prop-types": "off",
 		"react/react-in-jsx-scope": "off",
 		"react/jsx-indent": [2, "tab"],
-		"react/jsx-indent-props": ["warn", "tab"]
+		"react/jsx-indent-props": ["warn", "tab"],
+		"react/jsx-props-no-spreading": "off"
 	}
 }

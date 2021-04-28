@@ -1,10 +1,16 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import axios from 'axios';
 
 import './Auth.scss';
 
-export default function Auth({ setLoginState }) {
+import { AppContext } from '../../AppContext';
+
+export default function Auth(props) {
+	const history = useHistory();
+	const { setIsLogin } = useContext(AppContext);
+
 	const [authType, setAuthType] = useState('login');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -26,7 +32,11 @@ export default function Auth({ setLoginState }) {
 				if (response.status === 200) {
 					localStorage.token = response.data.token;
 
-					setLoginState(true);
+					setIsLogin(true);
+
+					const redirect = props.location.state ? props.location.state.from : '/';
+
+					history.push(redirect);
 				}
 			})
 			.catch((error) => {
