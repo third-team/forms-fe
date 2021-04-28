@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import axios from 'axios';
 
@@ -34,9 +35,11 @@ export default function Homepage() {
 				))
 			)}
 
-			<button type='button' className='button'>
-				Create Form
-			</button>
+			<Link to='/create-form' className='margin-left'>
+				<button type='button' className='button'>
+					Create Form
+				</button>
+			</Link>
 		</div>
 	);
 }
