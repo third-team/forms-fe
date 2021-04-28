@@ -9,7 +9,7 @@ import { AppContext } from '../../AppContext';
 
 export default function Auth(props) {
 	const history = useHistory();
-	const { setIsLogin } = useContext(AppContext);
+	const { setLoggedIn } = useContext(AppContext);
 
 	const [authType, setAuthType] = useState('login');
 	const [email, setEmail] = useState('');
@@ -32,11 +32,9 @@ export default function Auth(props) {
 				if (response.status === 200) {
 					localStorage.token = response.data.token;
 
-					setIsLogin(true);
+					setLoggedIn(true);
 
-					const redirect = props.location.state ? props.location.state.from : '/';
-
-					history.push(redirect);
+					history.push(props.location && props.location.state ? props.location.state.from : '/');
 				}
 			})
 			.catch((error) => {

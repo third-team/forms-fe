@@ -1,25 +1,28 @@
-import React from 'react';
+import { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-export default function ProtectedRoute({ component: Component, isLogin, ...rest }) {
+import { AppContext } from './AppContext';
+
+export default function ProtectedRoute({ component: Component, ...rest }) {
+	const { loggedIn } = useContext(AppContext);
+
 	return (
 		<Route
 			{...rest}
-			render={(props) => {
-				if (isLogin) {
-					return <Component {...rest} {...props} />;
-				}
-				return (
+			render={(props) =>
+				loggedIn ? (
+					<Component {...props} />
+				) : (
 					<Redirect
 						to={{
 							pathname: '/auth',
 							state: {
-								from: props.location,
+								from: props.location.pathname,
 							},
 						}}
 					/>
-				);
-			}}
+				)
+			}
 		/>
 	);
 }

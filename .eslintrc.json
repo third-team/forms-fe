@@ -31,11 +31,14 @@
 		"function-paren-newline": "off",
 		"jsx-a11y/label-has-associated-control": "off",
 		"import/prefer-default-export": "off",
+		"no-confusing-arrow": "off",
+		"no-unused-expressions": "off",
 
 		"react/prop-types": "off",
 		"react/react-in-jsx-scope": "off",
 		"react/jsx-indent": [2, "tab"],
 		"react/jsx-indent-props": ["warn", "tab"],
-		"react/jsx-props-no-spreading": "off"
+		"react/jsx-props-no-spreading": "off",
+		"react/jsx-curly-newline": "off"
 	}
 }

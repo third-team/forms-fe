@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import axios from 'axios';
-
 import { v1 as uuid } from 'uuid';
+
+import axios from 'axios';
 
 import './Body.scss';
 
