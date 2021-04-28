@@ -1,4 +1,4 @@
-.option {
+.answer {
 	width: 45%;
 
 	display: flex;
@@ -8,7 +8,7 @@
 	margin-bottom: 20px;
 }
 
-.option-input {
+.answer-input {
 	width: 85%;
 
 	border: 0;
@@ -19,7 +19,7 @@
 	font-size: 20px;
 }
 
-.option-input:focus {
+.answer-input:focus {
 	outline: none;
 }
 

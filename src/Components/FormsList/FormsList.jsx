@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 import axios from 'axios';
 
-import './Homepage.scss';
+import './FormsList.scss';
 
-export default function Homepage() {
+export default function FormsList() {
 	const [forms, setForms] = useState([]);
 
 	useEffect(() => {

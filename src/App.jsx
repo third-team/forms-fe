@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import ProtectedRoute from './ProtectedRoute';
 import Header from './Components/Header/Header';
-import Homepage from './Components/HomePage/Homepage';
+import FormsList from './Components/FormsList/FormsList';
 import Auth from './Components/Auth/Auth';
-import Body from './Components/Body/Body';
+import Form from './Components/Form/Form';
 
 import { AppContext } from './AppContext';
 
@@ -27,8 +27,8 @@ function App() {
 				<AppContext.Provider value={{ loggedIn, setLoggedIn }}>
 					<Header />
 					<Switch>
-						<ProtectedRoute exact path='/' component={Homepage} />
-						<ProtectedRoute exact path='/create-form' component={Body} />
+						<ProtectedRoute exact path='/' component={FormsList} />
+						<ProtectedRoute exact path='/create-form' component={Form} />
 						<Route exact path='/auth' render={(props) => <Auth {...props} />} />
 					</Switch>
 				</AppContext.Provider>

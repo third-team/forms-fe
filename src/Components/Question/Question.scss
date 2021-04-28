@@ -1,4 +1,4 @@
-.field {
+.question {
 	display: flex;
 	flex-direction: column;
 
@@ -20,7 +20,7 @@
 	margin-bottom: 20px;
 }
 
-.field-name {
+.question-name {
 	font-size: 24px;
 	width: 45%;
 }
@@ -36,7 +36,7 @@
 	display: flex;
 }
 
-.button-add-option {
+.button-add-answer {
 	margin-left: 0;
 	margin-right: auto;
 }
