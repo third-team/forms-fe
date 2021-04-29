@@ -1,59 +1,95 @@
-import { useState, useEffect } from 'react';
-
-import { v1 as uuid } from 'uuid';
+import { connect } from 'react-redux';
 
 import './Question.scss';
 
 import Answer from './Answer';
 
-export default function Question({ questionIndex: index, name, answerType, setQuestions }) {
-	const [answers, setAnswers] = useState([{ id: uuid(), answer: '', isCorrect: false }]);
+import {
+	updateQuestionTextActionCreator,
+	changeAnswerTypeActionCreator,
+	removeQuestionActionCreator,
+	addAnswerActionCreator,
+} from '../../redux/actionCreators';
 
-	const changeAnswerType = (event) => {
-		setQuestions((prevState) => prevState.map((item, ind) => (index === ind ? { ...item, answerType: event.target.value } : item)));
-
-		setAnswers((prevList) => prevList.map((item) => ({ ...item, isCorrect: false })));
-	};
-
-	const updateQuestionName = (event) => {
-		setQuestions((prevState) => prevState.map((item, ind) => (index === ind ? { ...item, name: event.target.value } : item)));
-	};
-
-	const removeQuestion = () => {
-		setQuestions((prevList) => prevList.filter((_, ind) => ind !== index));
-	};
-
-	const addAnswer = () => {
-		setAnswers((prevList) => [...prevList, { id: uuid(), answer: '', isCorrect: false }]);
-	};
-
-	useEffect(() => {
-		setQuestions((prevState) => (prevState ? prevState.map((item, ind) => (index === ind ? { ...item, answers } : item)) : prevState));
-	}, [answers]);
-
+function Question({ questionIndex, name, answers, updateQuestionText, changeAnswerType, removeQuestion, addAnswer }) {
 	return (
 		<div className='question'>
 			<div className='name-select-line'>
-				<input className='question-name' placeholder='Name of question...' value={name} onChange={updateQuestionName} />
+				<input
+					className='question-name'
+					placeholder='Name of question...'
+					value={name}
+					onChange={(event) => {
+						event.preventDefault();
+						updateQuestionText(questionIndex, event.target.value);
+					}}
+				/>
 
-				<select className='answer-type-selector' size='large' defaultValue='Choose...' onChange={changeAnswerType}>
+				<select
+					className='answer-type-selector'
+					size='large'
+					defaultValue='Choose...'
+					onChange={(event) => {
+						changeAnswerType(questionIndex, event.target.value);
+					}}
+				>
 					<option value='checkbox'>Checkbox</option>
 					<option value='radio'>Radiobutton</option>
 				</select>
 			</div>
 
-			{answers.map((item, ind) => (
-				<Answer key={item.id} answerType={answerType} answerIndex={ind} isCorrect={item.isCorrect} setAnswers={setAnswers} />
+			{answers.map((answer, answerIndex) => (
+				<Answer questionIndex={questionIndex} answerIndex={answerIndex} key={answer.id} />
 			))}
 
 			<div className='button-line'>
-				<button type='button' className='button button-add-answer' onClick={addAnswer}>
+				<button
+					type='button'
+					className='button button-add-answer'
+					onClick={() => {
+						addAnswer(questionIndex);
+					}}
+				>
 					Add answer
 				</button>
-				<button type='button' className='button' onClick={removeQuestion}>
+
+				<button
+					type='button'
+					className='button'
+					onClick={() => {
+						removeQuestion(questionIndex);
+					}}
+				>
 					Delete Question
 				</button>
 			</div>
 		</div>
 	);
 }
+
+const mapStateToProps = (state, props) => {
+	const question = state.questions.questions[props.questionIndex];
+
+	return {
+		questionIndex: props.questionIndex,
+		name: question.name,
+		answers: question.answers,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => ({
+	updateQuestionText: (questionIndex, text) => {
+		dispatch(updateQuestionTextActionCreator(questionIndex, text));
+	},
+	changeAnswerType: (questionIndex, answerType) => {
+		dispatch(changeAnswerTypeActionCreator(questionIndex, answerType));
+	},
+	removeQuestion: (questionIndex) => {
+		dispatch(removeQuestionActionCreator(questionIndex));
+	},
+	addAnswer: (questionIndex) => {
+		dispatch(addAnswerActionCreator(questionIndex));
+	},
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Question);

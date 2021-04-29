@@ -1,6 +1,4 @@
-import { useState } from 'react';
-
-import { v1 as uuid } from 'uuid';
+import { connect } from 'react-redux';
 
 import axios from 'axios';
 
@@ -8,13 +6,9 @@ import './Form.scss';
 
 import Question from '../Question/Question';
 
-export default function Body() {
-	const [questions, setQuestions] = useState([{ id: uuid(), name: '', answerType: 'checkbox', answers: [] }]);
+import { addQuestionActionCreator } from '../../redux/actionCreators';
 
-	const addQuestion = () => {
-		setQuestions((prevList) => [...prevList, { id: uuid(), name: '', answerType: 'checkbox', answers: [] }]);
-	};
-
+function Form({ questions, addQuestion }) {
 	const submitForm = () => {
 		const formData = questions.map(({ id: questionsId, ...item }) => {
 			const answers = item.answers.map(({ id, ...answer }) => answer);
@@ -35,9 +29,9 @@ export default function Body() {
 	};
 
 	return (
-		<div className='body'>
-			{questions.map((item, ind) => (
-				<Question questionIndex={ind} name={item.name} answerType={item.answerType} setQuestions={setQuestions} key={item.id} />
+		<div className='form'>
+			{questions.map((question, questionIndex) => (
+				<Question questionIndex={questionIndex} key={question.id} />
 			))}
 
 			<input type='button' value='Add question' className='button' onClick={addQuestion} />
@@ -46,3 +40,15 @@ export default function Body() {
 		</div>
 	);
 }
+
+const mapStateToProps = (state) => ({
+	questions: state.questions.questions,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	addQuestion: () => {
+		dispatch(addQuestionActionCreator());
+	},
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Form);

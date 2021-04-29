@@ -1,39 +1,60 @@
+import { connect } from 'react-redux';
+
+import { removeAnswerActionCreator, updateAnswerTextActionCreator, updateIsCorrectActionCreator } from '../../redux/actionCreators';
+
 import './Answer.scss';
 
-export default function Answer({ answerType, answerIndex: index, isCorrect, setAnswers }) {
-	const removeAnswer = () => {
-		setAnswers((prevList) => prevList.filter((_, ind) => ind !== index));
-	};
-
-	const updateTextField = (event) => {
-		setAnswers((prevList) =>
-			prevList.map((item, ind) => {
-				if (ind === index) {
-					return { ...prevList[index], answer: event.target.value };
-				}
-				return item;
-			}),
-		);
-	};
-
-	const updateIsCorrectField = (event) => {
-		setAnswers((prevList) =>
-			prevList.map((item, ind) => {
-				if (ind === index) {
-					return { ...prevList[index], isCorrect: event.target.checked };
-				}
-				return answerType === 'checkbox' ? item : { ...item, isCorrect: false };
-			}),
-		);
-	};
-
+function Answer({ questionIndex, answerIndex, answerType, isCorrect, removeAnswer, updateAnswerText, updateIsCorrect }) {
 	return (
 		<div className='answer'>
-			<input type={answerType} checked={isCorrect} className='answer-control' onChange={updateIsCorrectField} />
-			<input type='text' placeholder='Enter something...' onChange={updateTextField} className='answer-input' />
-			<button type='button' onClick={removeAnswer} className='delete-button'>
+			<input
+				type={answerType}
+				checked={isCorrect}
+				className='answer-control'
+				onChange={(event) => {
+					updateIsCorrect(questionIndex, answerIndex, answerType, event.target.checked);
+				}}
+			/>
+			<input
+				type='text'
+				placeholder='Enter something...'
+				onChange={(event) => {
+					event.preventDefault();
+					updateAnswerText(questionIndex, answerIndex, event.target.value);
+				}}
+				className='answer-input'
+			/>
+
+			<button
+				type='button'
+				onClick={() => {
+					removeAnswer(questionIndex, answerIndex);
+				}}
+				className='delete-button'
+			>
 				&#10006;
 			</button>
 		</div>
 	);
 }
+
+const mapStateToProps = (state, props) => ({
+	questionIndex: props.questionIndex,
+	answerIndex: props.answerIndex,
+	answerType: state.questions.questions[props.questionIndex].answerType,
+	isCorrect: state.questions.questions[props.questionIndex].answers[props.answerIndex].isCorrect,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	removeAnswer: (questionIndex, answerIndex) => {
+		dispatch(removeAnswerActionCreator(questionIndex, answerIndex));
+	},
+	updateAnswerText: (questionIndex, answerIndex, text) => {
+		dispatch(updateAnswerTextActionCreator(questionIndex, answerIndex, text));
+	},
+	updateIsCorrect: (questionIndex, answerIndex, answerType, checked) => {
+		dispatch(updateIsCorrectActionCreator(questionIndex, answerIndex, answerType, checked));
+	},
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Answer);
