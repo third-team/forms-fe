@@ -3,8 +3,6 @@ import { useHistory } from 'react-router-dom';
 
 import axios from 'axios';
 
-import './Auth.scss';
-
 import { AppContext } from '../../AppContext';
 
 export default function Auth(props) {
@@ -51,7 +49,7 @@ export default function Auth(props) {
 						type='email'
 						placeholder='yourEmail@.com'
 						name='email'
-						className='data-input'
+						className='input'
 						id='email'
 						onChange={(event) => {
 							setEmail(event.target.value);
@@ -65,7 +63,7 @@ export default function Auth(props) {
 						type='password'
 						placeholder='Your password...'
 						name='password'
-						className='data-input'
+						className='input'
 						id='password'
 						onChange={(event) => {
 							setPassword(event.target.value);
@@ -80,7 +78,7 @@ export default function Auth(props) {
 							type='password'
 							placeholder='Your password...'
 							name='passwordChecking'
-							className='data-input'
+							className='input'
 							id='passwordChecking'
 							onChange={(event) => {
 								setPasswordChecking(event.target.value);
@@ -88,12 +86,12 @@ export default function Auth(props) {
 						/>
 					</label>
 				)}
-				<button type='button' className='button auth-buttons submit-button' onClick={handleSubmit}>
+				<button type='button' className='button' onClick={handleSubmit}>
 					Submit
 				</button>
 			</form>
 
-			<button type='button' className='button auth-buttons' onClick={updateAuthType}>
+			<button type='button' className='button' onClick={updateAuthType}>
 				{authType === 'login' ? 'Register' : 'Login'}
 			</button>
 		</div>

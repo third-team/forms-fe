@@ -1,7 +1,5 @@
 import { connect } from 'react-redux';
 
-import './Question.scss';
-
 import Answer from './Answer';
 
 import {
@@ -11,14 +9,13 @@ import {
 	addAnswerActionCreator,
 } from '../../redux/actionCreators';
 
-function Question({ questionIndex, name, answers, updateQuestionText, changeAnswerType, removeQuestion, addAnswer }) {
+function Question({ questionIndex, question, answers, updateQuestionText, changeAnswerType, removeQuestion, addAnswer }) {
 	return (
 		<div className='question'>
-			<div className='name-select-line'>
+			<div className='parameters-line'>
 				<input
-					className='question-name'
 					placeholder='Name of question...'
-					value={name}
+					value={question}
 					onChange={(event) => {
 						event.preventDefault();
 						updateQuestionText(questionIndex, event.target.value);
@@ -26,7 +23,6 @@ function Question({ questionIndex, name, answers, updateQuestionText, changeAnsw
 				/>
 
 				<select
-					className='answer-type-selector'
 					size='large'
 					defaultValue='Choose...'
 					onChange={(event) => {
@@ -68,12 +64,12 @@ function Question({ questionIndex, name, answers, updateQuestionText, changeAnsw
 }
 
 const mapStateToProps = (state, props) => {
-	const question = state.questions.questions[props.questionIndex];
+	const questionItem = state.questions.questions[props.questionIndex];
 
 	return {
 		questionIndex: props.questionIndex,
-		name: question.name,
-		answers: question.answers,
+		question: questionItem.question,
+		answers: questionItem.answers,
 	};
 };
 

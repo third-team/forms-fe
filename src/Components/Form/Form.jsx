@@ -2,8 +2,6 @@ import { connect } from 'react-redux';
 
 import axios from 'axios';
 
-import './Form.scss';
-
 import Question from '../Question/Question';
 
 import { addQuestionActionCreator } from '../../redux/actionCreators';

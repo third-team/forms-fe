@@ -2,19 +2,19 @@ import { connect } from 'react-redux';
 
 import { removeAnswerActionCreator, updateAnswerTextActionCreator, updateIsCorrectActionCreator } from '../../redux/actionCreators';
 
-import './Answer.scss';
-
 function Answer({ questionIndex, answerIndex, answerType, isCorrect, removeAnswer, updateAnswerText, updateIsCorrect }) {
 	return (
 		<div className='answer'>
-			<input
-				type={answerType}
-				checked={isCorrect}
-				className='answer-control'
-				onChange={(event) => {
-					updateIsCorrect(questionIndex, answerIndex, answerType, event.target.checked);
-				}}
-			/>
+			<div className='answer-control'>
+				<input
+					type={answerType}
+					checked={isCorrect}
+					className='answer-control'
+					onChange={(event) => {
+						updateIsCorrect(questionIndex, answerIndex, answerType, event.target.checked);
+					}}
+				/>
+			</div>
 			<input
 				type='text'
 				placeholder='Enter something...'
@@ -22,18 +22,19 @@ function Answer({ questionIndex, answerIndex, answerType, isCorrect, removeAnswe
 					event.preventDefault();
 					updateAnswerText(questionIndex, answerIndex, event.target.value);
 				}}
-				className='answer-input'
+				className='input'
 			/>
-
-			<button
-				type='button'
-				onClick={() => {
-					removeAnswer(questionIndex, answerIndex);
-				}}
-				className='delete-button'
-			>
-				&#10006;
-			</button>
+			<div className='delete-container'>
+				<button
+					type='button'
+					onClick={() => {
+						removeAnswer(questionIndex, answerIndex);
+					}}
+					className='delete-button'
+				>
+					&#10006;
+				</button>
+			</div>
 		</div>
 	);
 }

@@ -1,0 +1,232 @@
+html,
+body {
+	font-size: 16px;
+
+	margin: 0;
+	padding: 0;
+
+	background-color: #d2f4ea;
+}
+
+$big-font-size: 1.5rem;
+$bigger-font-size: 1.25rem;
+$medium-font-size: 1rem;
+
+$background-card-color: #f8f9fa;
+$border-card-color: #dee2e6;
+
+@mixin border($size, $color, $radius) {
+	border: solid $size $color;
+	border-radius: $radius;
+}
+
+%flex-column {
+	display: flex;
+	flex-direction: column;
+}
+
+%flex-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+%card {
+	background-color: $background-card-color;
+
+	@include border(2px, $border-card-color, 10px);
+
+	box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.3);
+}
+
+#root {
+	width: 100vw;
+	height: 100vh;
+}
+
+.margin-left {
+	margin-left: auto;
+}
+
+.button {
+	height: 40px;
+
+	padding: 10px;
+	margin-left: auto;
+
+	@include border(1px, rgb(65, 61, 61), 7px);
+
+	font-size: $medium-font-size;
+
+	box-shadow: 0 0 4px;
+
+	&:focus {
+		outline: none;
+	}
+}
+
+.input {
+	width: 100%;
+
+	margin-bottom: 15px;
+
+	border: 0;
+	border-bottom: 2px solid black;
+
+	background-color: #f8f9fa;
+
+	font-size: $bigger-font-size;
+
+	&:focus {
+		outline: none;
+	}
+}
+
+header {
+	display: flex;
+	align-items: center;
+
+	box-sizing: border-box;
+	width: 100%;
+	height: 80px;
+
+	padding: 15px;
+	margin-bottom: 25px;
+
+	background-color: #93ccb3;
+
+	border-bottom: solid #a3cfbb 1px;
+
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.container {
+	@extend %flex-column;
+	justify-content: center;
+
+	width: 60%;
+
+	margin: 0 auto;
+}
+
+.auth-container {
+	@extend .container;
+	@extend %flex-center;
+
+	max-width: 400px;
+	min-width: 250px;
+
+	margin-top: 3%;
+
+	.auth-form {
+		@extend %flex-column;
+
+		box-sizing: border-box;
+		width: 100%;
+
+		padding: 15px;
+		margin-bottom: 15px;
+
+		@extend %card;
+
+		font-size: $big-font-size;
+
+		> .button {
+			margin: auto;
+		}
+	}
+
+	> .button {
+		margin: auto;
+	}
+}
+
+.form-list-container {
+	@extend .container;
+
+	.form-name {
+		padding: 10px;
+		margin-bottom: 25px;
+
+		@extend %card;
+	}
+}
+
+.form {
+	@extend .container;
+
+	min-width: 500px;
+
+	.question {
+		@extend %flex-column;
+
+		padding: 25px;
+		margin-bottom: 25px;
+
+		@extend %card;
+	}
+
+	.parameters-line {
+		display: flex;
+		justify-content: space-between;
+
+		margin-bottom: 20px;
+
+		> * {
+			width: 45%;
+
+			background-color: #e1e2e4;
+
+			@include border(2px, $border-card-color, 4px);
+
+			font-size: $big-font-size;
+
+			&:focus {
+				outline: none;
+			}
+		}
+	}
+
+	.button-line {
+		display: flex;
+	}
+
+	.button-add-answer {
+		margin-left: 0;
+		margin-right: auto;
+	}
+}
+
+.answer {
+	@extend %flex-center;
+
+	width: 45%;
+
+	margin-left: 5px;
+	margin-bottom: 20px;
+
+	> input {
+		margin-bottom: 0;
+	}
+
+	.answer-control {
+		align-self: center;
+	}
+
+	.delete-container {
+		@extend %flex-center;
+
+		margin-left: 10px;
+
+		.delete-button {
+			@extend %flex-center;
+
+			width: 30px;
+			height: 30px;
+
+			background-color: #f8d7da;
+
+			@include border(1px, gray, 15px);
+		}
+	}
+}

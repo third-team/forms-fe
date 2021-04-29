@@ -22,18 +22,16 @@ function App() {
 
 	if (loggedIn === null) return null;
 	return (
-		<div className='app'>
-			<Router>
-				<AppContext.Provider value={{ loggedIn, setLoggedIn }}>
-					<Header />
-					<Switch>
-						<ProtectedRoute exact path='/' component={FormsList} />
-						<ProtectedRoute exact path='/create-form' component={Form} />
-						<Route exact path='/auth' render={(props) => <Auth {...props} />} />
-					</Switch>
-				</AppContext.Provider>
-			</Router>
-		</div>
+		<Router>
+			<AppContext.Provider value={{ loggedIn, setLoggedIn }}>
+				<Header />
+				<Switch>
+					<ProtectedRoute exact path='/' component={FormsList} />
+					<ProtectedRoute exact path='/create-form' component={Form} />
+					<Route exact path='/auth' render={(props) => <Auth {...props} />} />
+				</Switch>
+			</AppContext.Provider>
+		</Router>
 	);
 }
 

@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
-import './index.scss';
+import './styles.scss';
 
 import appReducer from './redux/reducers';
 

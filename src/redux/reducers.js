@@ -14,7 +14,7 @@ import {
 } from './actions';
 
 const initialState = {
-	questions: [{ id: uuid(), name: '', answerType: 'checkbox', answers: [{ id: uuid(), answer: '', isCorrect: false }] }],
+	questions: [{ id: uuid(), question: '', answerType: 'checkbox', answers: [{ id: uuid(), answer: '', isCorrect: false }] }],
 };
 
 const questionReducer = (state = initialState, action) => {
@@ -23,15 +23,15 @@ const questionReducer = (state = initialState, action) => {
 			return {
 				...state,
 				questions: state.questions.concat([
-					{ id: uuid(), name: '', answerType: 'checkbox', answers: [{ id: uuid(), answer: '', isCorrect: false }] },
+					{ id: uuid(), question: '', answerType: 'checkbox', answers: [{ id: uuid(), answer: '', isCorrect: false }] },
 				]),
 			};
 
 		case UPDATE_QUESTION_TEXT:
 			return {
 				...state,
-				questions: state.questions.map((question, questionIndex) =>
-					questionIndex === action.questionIndex ? { ...question, name: action.text } : question,
+				questions: state.questions.map((questionItem, questionIndex) =>
+					questionIndex === action.questionIndex ? { ...questionItem, question: action.text } : questionItem,
 				),
 			};
 

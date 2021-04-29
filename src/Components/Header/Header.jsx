@@ -1,7 +1,5 @@
 import { useContext } from 'react';
 
-import './Header.scss';
-
 import { AppContext } from '../../AppContext';
 
 export default function Header() {

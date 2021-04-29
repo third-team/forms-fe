@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 
 import axios from 'axios';
 
-import './FormsList.scss';
-
 export default function FormsList() {
 	const [forms, setForms] = useState([]);
 
@@ -24,7 +22,7 @@ export default function FormsList() {
 	}, []);
 
 	return (
-		<div className='container'>
+		<div className='form-list-container'>
 			{forms.length === 0 ? (
 				<h1>You haven&apos;t created any forms yet... Do you want to create a new one?</h1>
 			) : (
