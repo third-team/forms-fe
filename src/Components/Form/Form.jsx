@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import axios from 'axios';
 
-import Question from '../Question/Question';
+import Question from './Question';
 
 import { addQuestionActionCreator } from '../../redux/actionCreators';
 

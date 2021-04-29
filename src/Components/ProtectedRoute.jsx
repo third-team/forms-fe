@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-import { AppContext } from './AppContext';
+import { AppContext } from '../AppContext';
 
 export default function ProtectedRoute({ component: Component, ...rest }) {
 	const { loggedIn } = useContext(AppContext);
