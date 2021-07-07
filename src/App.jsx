@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import ProtectedRoute from './Components/ProtectedRoute';
-import Header from './Components/Header';
-import FormsList from './Components/FormsList/FormsList';
-import Auth from './Components/Auth/Auth';
-import Form from './Components/Form/Form';
+import ProtectedRoute from './components/ProtectedRoute';
+import Header from './components/Header';
+import FormsList from './components/FormsList/FormsList';
+import Auth from './components/Auth/Auth';
+import Form from './components/Form/Form';
 
 import { AppContext } from './AppContext';
 
