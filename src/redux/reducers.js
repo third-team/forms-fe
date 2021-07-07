@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 
-import { v1 as uuid } from 'uuid';
-
 import {
+	SET_FORMS_LIST,
+	UPDATE_FORM_TEXT,
 	ADD_QUESTION,
 	UPDATE_QUESTION_TEXT,
 	CHANGE_ANSWER_TYPE,
@@ -11,111 +11,140 @@ import {
 	UPDATE_ANSWER_TEXT,
 	UPDATE_IS_CORRECT,
 	REMOVE_ANSWER,
+	INITIALIZE_FORM_STATE,
+	CLEAN_FORM_STATE,
+	REMOVE_FORM,
 } from './actions';
 
-const initialState = {
-	questions: [{ id: uuid(), question: '', answerType: 'checkbox', answers: [{ id: uuid(), answer: '', isCorrect: false }] }],
+const formsListReducer = (state = [], action) => {
+	switch (action.type) {
+		case SET_FORMS_LIST:
+			return action.formList;
+		case REMOVE_FORM:
+			return state.filter((item) => item._id !== action.id);
+		default:
+			return state;
+	}
 };
 
-const questionReducer = (state = initialState, action) => {
+const formReducer = (state = {}, action) => {
 	switch (action.type) {
-		case ADD_QUESTION:
-			return {
-				...state,
-				questions: state.questions.concat([
-					{ id: uuid(), question: '', answerType: 'checkbox', answers: [{ id: uuid(), answer: '', isCorrect: false }] },
-				]),
-			};
+		case INITIALIZE_FORM_STATE:
+			return { ...state, name: action.form.name, _id: action.form._id };
 
-		case UPDATE_QUESTION_TEXT:
-			return {
-				...state,
-				questions: state.questions.map((questionItem, questionIndex) =>
-					questionIndex === action.questionIndex ? { ...questionItem, question: action.text } : questionItem,
-				),
-			};
+		case UPDATE_FORM_TEXT:
+			return { ...state, name: action.name };
 
-		case CHANGE_ANSWER_TYPE:
-			return {
-				...state,
-				questions: state.questions.map((question, questionIndex) => {
-					if (questionIndex === action.questionIndex) {
-						return {
-							...question,
-							answerType: action.answerType,
-							answers: question.answers.map((answer) => ({ ...answer, isCorrect: false })),
-						};
-					}
-					return question;
-				}),
-			};
-
-		case REMOVE_QUESTION:
-			return {
-				...state,
-				questions: state.questions.filter((_, questionIndex) => questionIndex !== action.questionIndex),
-			};
-
-		case ADD_ANSWER:
-			return {
-				...state,
-				questions: state.questions.map((question, questionIndex) =>
-					questionIndex === action.questionIndex
-						? { ...question, answers: question.answers.concat([{ id: uuid(), answer: '', isCorrect: false }]) }
-						: question,
-				),
-			};
-
-		case UPDATE_ANSWER_TEXT:
-			return {
-				...state,
-				questions: state.questions.map((question, questionIndex) => {
-					if (questionIndex === action.questionIndex) {
-						return {
-							...question,
-							answers: question.answers.map((item, answerIndex) =>
-								answerIndex === action.answerIndex ? { ...item, answer: action.text } : item,
-							),
-						};
-					}
-					return question;
-				}),
-			};
-
-		case UPDATE_IS_CORRECT:
-			console.log(action);
-			return {
-				...state,
-				questions: state.questions.map((question, questionIndex) => {
-					if (questionIndex === action.questionIndex) {
-						return {
-							...question,
-							answers: question.answers.map((answer, answerIndex) => {
-								if (answerIndex === action.answerIndex) return { ...answer, isCorrect: action.checked };
-								return action.answerType === 'checkbox' ? answer : { ...answer, isCorrect: false };
-							}),
-						};
-					}
-					return question;
-				}),
-			};
-
-		case REMOVE_ANSWER:
-			return {
-				...state,
-				questions: state.questions.map((question, questionIndex) => {
-					if (questionIndex === action.questionIndex) {
-						return { ...question, answers: question.answers.filter((_, answerIndex) => answerIndex !== action.answerIndex) };
-					}
-					return question;
-				}),
-			};
+		case CLEAN_FORM_STATE:
+			return {};
 
 		default:
 			return state;
 	}
 };
 
-const appReducer = combineReducers({ questions: questionReducer });
+const questionReducer = (state = {}, action) => {
+	switch (action.type) {
+		case INITIALIZE_FORM_STATE:
+			return { ...state, questions: action.form.questions };
+		case ADD_QUESTION:
+			return {
+				...state,
+				questions: state.questions.concat([{ _id: action.questionId, question: 'Question', answerType: 'checkbox', answers: [] }]),
+			};
+
+		case UPDATE_QUESTION_TEXT:
+			return {
+				...state,
+				questions: state.questions.map((questionItem) =>
+					questionItem._id === action.questionId ? { ...questionItem, question: action.text } : questionItem,
+				),
+			};
+
+		case CHANGE_ANSWER_TYPE:
+			return {
+				...state,
+				questions: state.questions.map((questionItem) => {
+					if (questionItem._id === action.questionId) {
+						return {
+							...questionItem,
+							answerType: action.answerType,
+							answers: questionItem.answers.map((answer) => ({ ...answer, isCorrect: false })),
+						};
+					}
+
+					return questionItem;
+				}),
+			};
+
+		case REMOVE_QUESTION:
+			return {
+				...state,
+				questions: state.questions.filter((questionItem) => questionItem._id !== action.questionId),
+			};
+
+		case ADD_ANSWER:
+			return {
+				...state,
+				questions: state.questions.map((questionItem) =>
+					questionItem._id === action.questionId
+						? { ...questionItem, answers: questionItem.answers.concat([{ _id: action.answerId, answer: 'Answer', isCorrect: false }]) }
+						: questionItem,
+				),
+			};
+
+		case UPDATE_ANSWER_TEXT:
+			return {
+				...state,
+				questions: state.questions.map((questionItem) => {
+					if (questionItem._id === action.questionId) {
+						return {
+							...questionItem,
+							answers: questionItem.answers.map((answerItem) =>
+								answerItem._id === action.answerId ? { ...answerItem, answer: action.answer } : answerItem,
+							),
+						};
+					}
+					return questionItem;
+				}),
+			};
+
+		case UPDATE_IS_CORRECT:
+			return {
+				...state,
+				questions: state.questions.map((questionItem) => {
+					if (questionItem._id === action.questionId) {
+						return {
+							...questionItem,
+							answers: questionItem.answers.map((answerItem) => {
+								if (answerItem._id === action.answerId) return { ...answerItem, isCorrect: action.checked };
+								return action.answerType === 'checkbox' ? answerItem : { ...answerItem, isCorrect: false };
+							}),
+						};
+					}
+					return questionItem;
+				}),
+			};
+
+		case REMOVE_ANSWER:
+			return {
+				...state,
+				questions: state.questions.map((questionItem) => {
+					if (questionItem._id === action.questionId) {
+						return { ...questionItem, answers: questionItem.answers.filter((answerItem) => answerItem._id !== action.answerId) };
+					}
+					return questionItem;
+				}),
+			};
+
+		case CLEAN_FORM_STATE:
+			return {};
+
+		default:
+			return state;
+	}
+};
+
+const appReducer = combineReducers({ formsList: formsListReducer, form: formReducer, questions: questionReducer });
 
 export default appReducer;

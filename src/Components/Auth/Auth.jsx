@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 
 import axios from 'axios';
 
+import './Auth.scss';
+
 import { AppContext } from '../../AppContext';
 
 export default function Auth(props) {
@@ -25,9 +27,11 @@ export default function Auth(props) {
 		}
 
 		axios
-			.post(`https://third-team-forms.herokuapp.com/${authType}`, { email, password })
+			.post(`/${authType}`, { email, password })
 			.then((response) => {
 				if (response.status === 200) {
+					axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
+
 					localStorage.token = response.data.token;
 
 					setLoggedIn(true);
@@ -41,7 +45,7 @@ export default function Auth(props) {
 	};
 
 	return (
-		<div className='auth-container'>
+		<div className='container auth-form-wrapper'>
 			<form className='auth-form'>
 				<label htmlFor='email'>
 					Email
@@ -49,7 +53,7 @@ export default function Auth(props) {
 						type='email'
 						placeholder='yourEmail@.com'
 						name='email'
-						className='input'
+						className='input auth-form__input'
 						id='email'
 						onChange={(event) => {
 							setEmail(event.target.value);
@@ -63,7 +67,7 @@ export default function Auth(props) {
 						type='password'
 						placeholder='Your password...'
 						name='password'
-						className='input'
+						className='input auth-form__input'
 						id='password'
 						onChange={(event) => {
 							setPassword(event.target.value);
@@ -78,7 +82,7 @@ export default function Auth(props) {
 							type='password'
 							placeholder='Your password...'
 							name='passwordChecking'
-							className='input'
+							className='input auth-form__input'
 							id='passwordChecking'
 							onChange={(event) => {
 								setPasswordChecking(event.target.value);
@@ -86,12 +90,12 @@ export default function Auth(props) {
 						/>
 					</label>
 				)}
-				<button type='button' className='button' onClick={handleSubmit}>
+				<button type='button' className='button button-success' onClick={handleSubmit}>
 					Submit
 				</button>
 			</form>
 
-			<button type='button' className='button' onClick={updateAuthType}>
+			<button type='button' className='button button-primary' onClick={updateAuthType}>
 				{authType === 'login' ? 'Register' : 'Login'}
 			</button>
 		</div>

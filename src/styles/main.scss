@@ -1,0 +1,35 @@
+$color-original: #4a4a75;
+$color-primary: #0275d8;
+$color-success: #20c997;
+$color-danger: #b02a37;
+$color-reserve: #6200ee;
+
+$background-color-header: #1b1b1b;
+$background-color-body: lighten(#111111, 7%);
+$background-color-card: #3a3a3a;
+$background-color-input: lighten($background-color-card, 5%);
+
+$font-size-medium: 1rem;
+$font-size-big: 1.25rem;
+$font-size-large: 1.5rem;
+$font-size-giant: 1.75rem;
+
+@mixin flex($direction, $justify, $align) {
+	display: flex;
+
+	flex-direction: $direction;
+
+	justify-content: $justify;
+	align-items: $align;
+}
+
+@mixin border($size, $color, $radius) {
+	border: $size solid $color;
+	border-radius: $radius;
+}
+
+@mixin card($border-size, $border-radius, $background-color) {
+	@include border($border-size, darken($background-color, 10%), $border-radius);
+
+	background-color: $background-color;
+}

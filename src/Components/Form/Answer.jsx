@@ -1,61 +1,151 @@
+import { useState, useRef } from 'react';
+import { Transition } from 'react-transition-group';
 import { connect } from 'react-redux';
 
-import { removeAnswerActionCreator, updateAnswerTextActionCreator, updateIsCorrectActionCreator } from '../../redux/actionCreators';
+import axios from 'axios';
 
-function Answer({ questionIndex, answerIndex, answerType, isCorrect, removeAnswer, updateAnswerText, updateIsCorrect }) {
+import './Answer.scss';
+
+import { removeAnswerActionCreator, updateIsCorrectActionCreator } from '../../redux/actionCreators';
+
+import deleteIcon from '../../assets/icons/icon-delete.svg';
+
+import InputWrapper from '../utils/InputWrapper';
+
+function Answer({
+	creator,
+	questionId,
+	answerId,
+	answerType,
+	answer,
+	isCorrect,
+	questionTransitionState,
+	updateQuestionMaxHeight,
+	removeAnswerInState,
+	updateIsCorrectInState,
+}) {
+	const [animationState, setAnimationState] = useState(true);
+	const [answerMaxHeight, setAnswerMaxHeight] = useState(0);
+
+	const answerRef = useRef(null);
+
+	const updateIsCorrect = (checked) => {
+		axios
+			.put(`/answers/${answerId}`, { questionId, isCorrect: checked }, { headers: { Authorization: `Bearer ${localStorage.token}` } })
+			.then((response) => {
+				if (response.status === 200) {
+					updateIsCorrectInState(questionId, answerId, answerType, checked);
+				}
+			})
+			.catch((error) => {
+				console.log('Updating isCorrect error!');
+				console.log(error);
+				console.log(error.response);
+			});
+	};
+
+	const removeAnswer = () => {
+		axios
+			.delete(`/answers/${answerId}`, { headers: { Authorization: `Bearer ${localStorage.token}` } })
+			.then((response) => {
+				if (response.status === 200) {
+					removeAnswerInState(questionId, answerId);
+				}
+			})
+			.catch((error) => {
+				console.log('Deleting answer error!');
+				console.log(error);
+				console.log(error.response);
+			});
+	};
+
+	const defaultStyle = {
+		maxHeight: '0px',
+		overflow: 'hidden',
+
+		transition: '0.5s ease',
+	};
+
 	return (
-		<div className='answer'>
-			<div className='answer-control'>
-				<input
-					type={answerType}
-					checked={isCorrect}
-					className='answer-control'
-					onChange={(event) => {
-						updateIsCorrect(questionIndex, answerIndex, answerType, event.target.checked);
+		<Transition
+			nodeRef={answerRef}
+			in={animationState}
+			timeout={500}
+			appear
+			onEnter={() => {
+				setTimeout(() => {
+					setAnswerMaxHeight(answerRef.current.scrollHeight);
+				}, 0);
+			}}
+			onEntering={() => {
+				setTimeout(() => {
+					if (questionTransitionState === 'entering') updateQuestionMaxHeight(answerRef.current.scrollHeight);
+				}, 0);
+			}}
+			onExit={() => {
+				setAnswerMaxHeight(0);
+			}}
+			onExited={() => {
+				removeAnswer();
+			}}
+		>
+			{() => (
+				<div
+					ref={answerRef}
+					className='answer-wrapper'
+					style={{
+						...defaultStyle,
+						maxHeight: answerMaxHeight,
 					}}
-				/>
-			</div>
-			<input
-				type='text'
-				placeholder='Enter something...'
-				onChange={(event) => {
-					event.preventDefault();
-					updateAnswerText(questionIndex, answerIndex, event.target.value);
-				}}
-				className='input'
-			/>
-			<div className='delete-container'>
-				<button
-					type='button'
-					onClick={() => {
-						removeAnswer(questionIndex, answerIndex);
-					}}
-					className='delete-button'
 				>
-					&#10006;
-				</button>
-			</div>
-		</div>
+					<div className='answer'>
+						<div className='answer__input-control-wrapper'>
+							<div className='answer__input-control'>
+								<input
+									type={answerType}
+									checked={isCorrect}
+									onChange={(event) => {
+										updateIsCorrect(event.target.checked);
+									}}
+								/>
+							</div>
+						</div>
+
+						{creator ? (
+							<InputWrapper inputType='answer' questionId={questionId} answerId={answerId} initialText={answer} />
+						) : (
+							<div className='input-container'>
+								<label className='input'>{answer}</label>
+							</div>
+						)}
+
+						{creator ? (
+							<div className='answer__delete-container'>
+								<button
+									type='button'
+									onClick={() => {
+										setAnimationState(false);
+									}}
+									className='button button-danger'
+								>
+									<img src={deleteIcon} alt='delete answer' />
+								</button>
+							</div>
+						) : null}
+					</div>
+				</div>
+			)}
+		</Transition>
 	);
 }
 
-const mapStateToProps = (state, props) => ({
-	questionIndex: props.questionIndex,
-	answerIndex: props.answerIndex,
-	answerType: state.questions.questions[props.questionIndex].answerType,
-	isCorrect: state.questions.questions[props.questionIndex].answers[props.answerIndex].isCorrect,
-});
-
 const mapDispatchToProps = (dispatch) => ({
-	removeAnswer: (questionIndex, answerIndex) => {
-		dispatch(removeAnswerActionCreator(questionIndex, answerIndex));
+	updateIsCorrectInState: (questionId, answerId, answerType, checked) => {
+		dispatch(updateIsCorrectActionCreator(questionId, answerId, answerType, checked));
 	},
-	updateAnswerText: (questionIndex, answerIndex, text) => {
-		dispatch(updateAnswerTextActionCreator(questionIndex, answerIndex, text));
-	},
-	updateIsCorrect: (questionIndex, answerIndex, answerType, checked) => {
-		dispatch(updateIsCorrectActionCreator(questionIndex, answerIndex, answerType, checked));
+	removeAnswerInState: (questionId, answerId) => {
+		dispatch(removeAnswerActionCreator(questionId, answerId));
 	},
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Answer);
+export default connect(null, mapDispatchToProps)(Answer);

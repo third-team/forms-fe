@@ -33,12 +33,17 @@
 		"import/prefer-default-export": "off",
 		"no-confusing-arrow": "off",
 		"no-unused-expressions": "off",
+		"no-underscore-dangle": "off",
+		"no-nested-ternary": "off",
+		"jsx-a11y/control-has-associated-label": "off",
 
 		"react/prop-types": "off",
 		"react/react-in-jsx-scope": "off",
 		"react/jsx-indent": [2, "tab"],
 		"react/jsx-indent-props": ["warn", "tab"],
 		"react/jsx-props-no-spreading": "off",
-		"react/jsx-curly-newline": "off"
+		"react/jsx-curly-newline": "off",
+		"react/jsx-curly-brace-presence": "off",
+		"react/destructuring-assignment": "off"
 	}
 }
