@@ -1,0 +1,36 @@
+@import '../../styles/main.scss';
+@import '../../styles/utils.scss';
+
+.auth-form-wrapper {
+	// @extend .container;
+	max-width: 400px;
+	min-width: 250px;
+
+	margin-top: 3%;
+
+	.button {
+		margin: auto;
+	}
+
+	.auth-form {
+		@include flex(column, initial, initial);
+		@include card(0.125rem, 0.5rem, $background-color-card);
+
+		box-sizing: border-box;
+
+		width: 100%;
+
+		padding: 1rem;
+		margin-bottom: 1rem;
+
+		font-size: $font-size-big;
+
+		&__input {
+			width: 100%;
+
+			margin-bottom: 1rem;
+
+			font-size: $font-size-big;
+		}
+	}
+}
