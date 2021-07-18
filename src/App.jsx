@@ -1,38 +1,46 @@
-import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import ProtectedRoute from './components/ProtectedRoute';
-import Header from './components/Header';
-import FormsList from './components/FormsList/FormsList';
-import Auth from './components/Auth/Auth';
-import Form from './components/Form/Form';
+import { setIsAuthThunkCreator } from 'redux/thunks/userThunks';
 
-import { AppContext } from './AppContext';
+import ProtectedRoute from 'components/ProtectedRoute';
 
-function App() {
-	const [loggedIn, setLoggedIn] = useState(null);
+import { Header } from 'modules/Header';
 
+import { Home } from 'pages/Home';
+import { Auth } from 'pages/Auth';
+import { FormCreationView } from 'pages/FormCreationView';
+
+const App = ({ isAuth, setIsAuth }) => {
 	useEffect(() => {
 		if (localStorage.token) {
-			setLoggedIn(true);
+			setIsAuth(true);
 		} else {
-			setLoggedIn(false);
+			setIsAuth(false);
 		}
 	}, []);
 
-	if (loggedIn === null) return null;
-	return (
-		<Router>
-			<AppContext.Provider value={{ loggedIn, setLoggedIn }}>
-				<Header />
-				<Switch>
-					<ProtectedRoute exact path='/' component={FormsList} />
-					<ProtectedRoute exact path='/editing/:id' component={Form} />
-					<Route exact path='/auth' render={(props) => <Auth {...props} />} />
-				</Switch>
-			</AppContext.Provider>
-		</Router>
-	);
-}
+	if (isAuth === undefined) return null;
 
-export default App;
+	return (
+		<Switch>
+			<Route exact path='/auth' render={(props) => <Auth {...props} />} />
+			<>
+				<Header />
+				<ProtectedRoute exact path='/' component={Home} />
+				<ProtectedRoute exact path='/editing/:id' component={FormCreationView} />
+			</>
+		</Switch>
+	);
+};
+
+const mapStateToProps = (state) => ({ isAuth: state.user.isAuth });
+
+const mapDispatchToProps = (dispatch) => ({
+	setIsAuth: (isAuth) => {
+		dispatch(setIsAuthThunkCreator(isAuth));
+	},
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

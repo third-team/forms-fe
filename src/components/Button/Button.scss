@@ -1,0 +1,55 @@
+@import 'styles/main.scss';
+
+.button {
+	@include flex(row, center, center);
+
+	height: 2.5rem;
+	min-width: 100px;
+
+	padding: 0.625rem;
+
+	border-radius: 0.5rem;
+
+	font-size: $font-size-medium;
+	font-weight: 600;
+
+	transition: 0.5s;
+
+	will-change: transform;
+
+	&:focus {
+		outline: none;
+	}
+
+	&:active {
+		transform: scale(1.099) perspective(1px);
+	}
+}
+
+@mixin button-color($color) {
+	@include border(0.125rem, $color, 0.5rem);
+
+	color: ghostwhite;
+
+	background-color: transparent;
+
+	&:hover {
+		background-color: $color;
+	}
+}
+
+.button-original {
+	@include button-color($color-original);
+}
+
+.button-primary {
+	@include button-color($color-primary);
+}
+
+.button-success {
+	@include button-color($color-success);
+}
+
+.button-danger {
+	@include button-color($color-danger);
+}

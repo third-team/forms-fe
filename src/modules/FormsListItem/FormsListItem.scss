@@ -1,0 +1,23 @@
+@import 'styles/main.scss';
+
+.form-preview {
+	@include flex(row, initial, center);
+	@include card(0.125rem, 0.625rem, $background-color-card);
+
+	padding: 1.25rem;
+	margin-bottom: 1.5rem;
+
+	h1 {
+		margin: 0;
+	}
+
+	&__buttons-wrapper {
+		@include flex(row, initial, center);
+
+		margin-left: auto;
+
+		.button {
+			margin-left: 1rem;
+		}
+	}
+}

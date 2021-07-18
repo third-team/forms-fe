@@ -1,0 +1,28 @@
+@import 'styles/main.scss';
+
+// .input-wrapper {
+// 	.input {
+// 		width: 100%;
+
+// 		box-sizing: border-box;
+
+// 		border-radius: 0.3rem;
+// 	}
+// }
+
+.input {
+	width: 100%;
+	box-sizing: border-box;
+
+	@include border(0.125rem, transparent, 0.3rem);
+
+	color: ghostwhite;
+
+	transition: 0.3s;
+
+	will-change: transform;
+
+	&:focus {
+		outline: none;
+	}
+}

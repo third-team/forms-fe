@@ -1,0 +1,43 @@
+@import 'styles/main.scss';
+
+.auth-wrapper {
+	max-width: 400px;
+	min-width: 250px;
+
+	margin: auto;
+
+	.button {
+		margin: auto;
+	}
+
+	.auth {
+		@include flex(column, initial, initial);
+		@include card(0.125rem, 0.5rem, $background-color-card);
+
+		box-sizing: border-box;
+
+		width: 100%;
+
+		padding: 1rem;
+		margin-bottom: 1rem;
+
+		font-size: $font-size-big;
+
+		&__input {
+			width: 100%;
+
+			margin-top: 0.5rem;
+			margin-bottom: 1rem;
+
+			background-color: $background-color-input;
+
+			font-size: $font-size-big;
+
+			border-color: $background-color-input;
+
+			&:focus {
+				border-color: darken($background-color-card, 8%);
+			}
+		}
+	}
+}

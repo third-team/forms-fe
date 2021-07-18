@@ -1,9 +1,12 @@
-@import './styles/main.scss';
+@import 'styles/main.scss';
 
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;400;600;700;900&display=swap');
 
 html,
 body {
+	width: 100vw;
+	height: 100vh;
+
 	margin: 0;
 	padding: 0;
 
@@ -11,8 +14,16 @@ body {
 	font-size: 16px;
 	color: ghostwhite;
 
-	// overflow-x: hidden;
+	overflow-x: hidden;
+
 	margin-right: calc(-1 * (100vw - 100%));
 
 	background-color: $background-color-body;
+}
+
+#root {
+	display: flex;
+	flex-direction: column;
+
+	height: 100%;
 }

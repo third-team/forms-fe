@@ -1,28 +1,25 @@
-import { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import { AppContext } from '../AppContext';
+const ProtectedRoute = ({ component: Component, isAuth, ...rest }) => (
+	<Route
+		{...rest}
+		render={(props) =>
+			isAuth ? (
+				<Component {...props} />
+			) : (
+				<Redirect
+					to={{
+						pathname: '/auth',
+						state: {
+							from: props.location.pathname,
+						},
+					}}
+				/>
+			)
+		}
+	/>
+);
+const mapStateToProps = (state) => ({ isAuth: state.user.isAuth });
 
-export default function ProtectedRoute({ component: Component, ...rest }) {
-	const { loggedIn } = useContext(AppContext);
-
-	return (
-		<Route
-			{...rest}
-			render={(props) =>
-				loggedIn ? (
-					<Component {...props} />
-				) : (
-					<Redirect
-						to={{
-							pathname: '/auth',
-							state: {
-								from: props.location.pathname,
-							},
-						}}
-					/>
-				)
-			}
-		/>
-	);
-}
+export default connect(mapStateToProps, null)(ProtectedRoute);
