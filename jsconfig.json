@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"baseUrl": "./src/",
+		"paths": {
+			"components/*": ["./src/components/*/index.jsx"],
+			"modules/*": ["./src/modules/*/index.jsx"],
+			"pages/*": ["./src/pages/*/index.jsx"]
+		},
+		"target": "es6",
+		"jsx": "react"
+	},
+	"include": ["src", ".trash/answerReducer.js"],
+	"exclude": ["node_modules"]
+}

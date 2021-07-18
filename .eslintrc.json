@@ -3,7 +3,8 @@
 		"browser": true,
 		"es2021": true
 	},
-	"extends": ["eslint:recommended", "airbnb", "plugin:react/recommended"],
+	"plugins": ["react", "prettier"],
+	"extends": ["eslint:recommended", "airbnb", "plugin:react/recommended", "prettier", "plugin:prettier/recommended"],
 	"parserOptions": {
 		"ecmaFeatures": {
 			"jsx": true,
@@ -12,11 +13,10 @@
 		"ecmaVersion": 12,
 		"sourceType": "module"
 	},
-	"plugins": ["react"],
 	"rules": {
 		"no-console": "off",
 		"semi": "warn",
-		"indent": ["warn", "tab", { "SwitchCase": 1 }],
+		"indent": ["warn", "tab", { "SwitchCase": 1, "offsetTernaryExpressions": true }],
 		"no-tabs": "off",
 		"quotes": ["warn", "single"],
 		"no-var": "warn",
@@ -36,6 +36,10 @@
 		"no-underscore-dangle": "off",
 		"no-nested-ternary": "off",
 		"jsx-a11y/control-has-associated-label": "off",
+		"no-mixed-spaces-and-tabs": "off",
+		"import/no-unresolved": "off",
+		"import/named": "off",
+		"import/extensions": "off",
 
 		"react/prop-types": "off",
 		"react/react-in-jsx-scope": "off",
@@ -44,6 +48,8 @@
 		"react/jsx-props-no-spreading": "off",
 		"react/jsx-curly-newline": "off",
 		"react/jsx-curly-brace-presence": "off",
-		"react/destructuring-assignment": "off"
+		"react/destructuring-assignment": "off",
+
+		"prettier/prettier": "off"
 	}
 }
