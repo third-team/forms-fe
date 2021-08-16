@@ -1,14 +1,20 @@
 {
 	"compilerOptions": {
-		"baseUrl": "./src/",
+		"target": "esnext",
+		"module": "es6",
+		"baseUrl": "./src",
 		"paths": {
-			"components/*": ["./src/components/*/index.jsx"],
-			"modules/*": ["./src/modules/*/index.jsx"],
-			"pages/*": ["./src/pages/*/index.jsx"]
+			"assets": ["./src/assets/*"],
+			"components": ["./src/components/*"],
+			"core": ["./src/core/*"],
+			"hooks": ["./src/hooks/*"],
+			"modules": ["./src/modules/*"],
+			"pages": ["./src/pages/*"],
+			"redux": ["./src/redux/*"],
+			"styles": ["./src/styles/*"],
+			"utils": ["./src/utils/*"]
 		},
-		"target": "es6",
 		"jsx": "react"
 	},
-	"include": ["src", ".trash/answerReducer.js"],
-	"exclude": ["node_modules"]
+	"exclude": ["node_modules", "trash"]
 }

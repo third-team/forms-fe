@@ -1,4 +1,11 @@
 {
+	"settings": {
+		"import/resolver": {
+			"node": {
+				"paths": ["src"]
+			}
+		}
+	},
 	"env": {
 		"browser": true,
 		"es2021": true
@@ -40,6 +47,7 @@
 		"import/no-unresolved": "off",
 		"import/named": "off",
 		"import/extensions": "off",
+		"no-debugger": "off",
 
 		"react/prop-types": "off",
 		"react/react-in-jsx-scope": "off",
