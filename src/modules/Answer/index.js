@@ -1,1 +1,2 @@
-export { default as Answer } from './AnswerAnimate';
+export { AnswerEditView } from './AnswerEditView';
+export { AnswerPassView } from './AnswerPassView';

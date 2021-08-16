@@ -1,12 +1,12 @@
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-const ProtectedRoute = ({ component: Component, isAuth, ...rest }) => (
+const ProtectedRoute = ({ component: Component, isAuth, viewType, ...rest }) => (
 	<Route
 		{...rest}
 		render={(props) =>
 			isAuth ? (
-				<Component {...props} />
+				<Component viewType={viewType} {...props} />
 			) : (
 				<Redirect
 					to={{

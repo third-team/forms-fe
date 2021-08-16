@@ -1,0 +1,148 @@
+@import 'styles/main.scss';
+
+.answer-edit-wrapper {
+	display: inline-flex;
+	flex-direction: column;
+
+	width: 100%;
+
+	.answer-edit {
+		@include flex(row, center, center);
+
+		box-sizing: border-box;
+
+		padding: 0.125rem;
+		height: 100%;
+		width: 48%;
+
+		margin-bottom: 1rem;
+
+		&__input-control-wrapper {
+			@include flex(row, center, center);
+
+			width: 1.3rem;
+			height: 1.3rem;
+		}
+
+		&__input-control {
+			@include flex(row, center, center);
+
+			input[type='checkbox'],
+			input[type='radio'] {
+				appearance: none;
+
+				position: relative;
+				width: 1.1875rem;
+				height: 1.1875rem;
+
+				margin: 0;
+				outline: none;
+
+				background-color: ghostwhite;
+
+				box-sizing: content-box;
+
+				@include border(0.125rem, $background-color-body, 0);
+
+				transition: 0.5s;
+
+				&:after {
+					content: '';
+					position: absolute;
+
+					opacity: 0;
+
+					background-color: ghostwhite;
+
+					transition: 0.5s;
+				}
+
+				&:checked {
+					background-color: $color-primary;
+					border-color: $color-primary;
+
+					&::after {
+						opacity: 1;
+					}
+
+					&:hover {
+						background-color: darken($color-primary, 10%);
+						border-color: darken($color-primary, 10%);
+					}
+				}
+
+				&:not(:checked) {
+					&:hover {
+						background-color: lighten($color-primary, 15%);
+						border-color: lighten($color-primary, 15%);
+					}
+				}
+			}
+
+			input[type='checkbox'] {
+				border-radius: 0.25rem;
+
+				&::after {
+					top: 0.33rem;
+					left: 0.15rem;
+
+					width: 0.6rem;
+					height: 0.25rem;
+
+					background-color: transparent;
+
+					border-left: 0.25rem solid ghostwhite;
+					border-bottom: 0.25rem solid ghostwhite;
+					border-radius: 0.2rem;
+
+					transform: rotate(-45deg);
+				}
+			}
+
+			input[type='radio'] {
+				border-radius: 50%;
+
+				&:after {
+					width: 1.1875rem;
+					height: 1.1875rem;
+					border-radius: 50%;
+
+					opacity: 0;
+
+					transform: scale(0.7);
+				}
+			}
+		}
+
+		&__input {
+			margin-left: 0.5rem;
+			margin-bottom: 0;
+
+			background-color: $background-color-input;
+
+			font-size: $font-size-big;
+
+			border-color: $background-color-input;
+
+			&:focus {
+				border-color: darken($background-color-card, 8%);
+			}
+		}
+
+		&__delete-container {
+			margin-left: 0.5rem;
+
+			.button {
+				@include border(0.125rem, darken($color-danger, 10%), 5px);
+
+				min-width: initial;
+				width: 1.5rem;
+				height: 1.5rem;
+
+				> img {
+					width: 1rem;
+				}
+			}
+		}
+	}
+}

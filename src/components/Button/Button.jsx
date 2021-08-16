@@ -1,3 +1,5 @@
+import classnames from 'classnames';
+
 import './Button.scss';
 
 const Button = ({ content, variant, classNames = '', onClickCallback, onClickCallbackProps = [] }) => {
@@ -6,7 +8,7 @@ const Button = ({ content, variant, classNames = '', onClickCallback, onClickCal
 	return (
 		<button
 			type='button'
-			className={`button ${buttonVariant} ${classNames}`}
+			className={classnames('button', buttonVariant, classNames)}
 			onClick={() => {
 				onClickCallback(...onClickCallbackProps);
 			}}

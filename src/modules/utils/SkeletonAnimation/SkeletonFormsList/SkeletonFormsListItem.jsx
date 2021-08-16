@@ -10,14 +10,10 @@ const SkeletonFormsListItem = () => {
 					</h1>
 					<div className='form-preview__buttons-wrapper'>
 						<button type='button' style={{ padding: 'initial' }} className='button button-success'>
-							<div style={{ height: '100%', width: '100%' }}>
-								<Skeleton height={'100%'} width={'100%'} style={{ display: 'flex' }} duration={1} />
-							</div>
+							Edit
 						</button>
 						<button type='button' style={{ padding: 'initial' }} className='button button-danger'>
-							<div style={{ height: '100%', width: '100%' }}>
-								<Skeleton height={'100%'} width={'100%'} style={{ display: 'flex' }} duration={1} />
-							</div>
+							Delete
 						</button>
 					</div>
 				</div>

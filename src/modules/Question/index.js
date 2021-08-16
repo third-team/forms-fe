@@ -1,1 +1,2 @@
-export { default as Question } from './QuestionAnimate';
+export { QuestionEditView } from './QuestionEditView';
+export { QuestionPassView } from './QuestionPassView';

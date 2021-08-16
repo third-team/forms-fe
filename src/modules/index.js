@@ -1,6 +1,9 @@
-export { FormsListItem } from './FormsListItem';
-export { Answer } from './Answer';
-export { Question } from './Question';
 export { Header } from './Header';
-export { SkeletonAnimationForm } from './utils';
-export { SkeletonAnimationFormsList } from './utils';
+export { FormsListItem } from './FormsListItem';
+export { QuestionEditView } from './Question';
+export { QuestionPassView } from './Question';
+export { AnswerEditView } from './Answer';
+export { AnswerPassView } from './Answer';
+export { SkeletonFormsList } from './utils';
+export { SkeletonFormEditView } from './utils';
+export { SkeletonFormPassView } from './utils';

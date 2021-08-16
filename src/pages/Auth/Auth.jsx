@@ -1,59 +1,96 @@
+import { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { signInThunkCreator } from 'redux/thunks/userThunks';
+
 import './Auth.scss';
 
 import { Button, Input } from 'components';
 
-const Auth = ({
-	authType,
-	updateAuthType,
-	email,
-	password,
-	passwordConfirmation,
-	setEmailCallback,
-	setPasswordCallback,
-	setPasswordConfirmationCallback,
-	handleSubmitClick,
-}) => (
-	<div className='container auth-wrapper'>
-		<form className='auth'>
-			<label htmlFor='email'>
-				Email
-				<Input
-					text={email}
-					inputType={'email'}
-					placeholder={'yourEmail@.com'}
-					inputPurpose={'auth'}
-					onChangeCallback={setEmailCallback}
-				/>
-			</label>
+const Auth = ({ history, location }) => {
+	const [authType, setAuthType] = useState('login');
 
-			<label htmlFor='password'>
-				Password:
-				<Input
-					text={password}
-					inputType={'password'}
-					placeholder={'Your password...'}
-					inputPurpose={'auth'}
-					onChangeCallback={setPasswordCallback}
-				/>
-			</label>
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
-			{authType === 'register' && (
-				<label htmlFor='passwordChecking'>
-					Repeat password:
+	const dispatch = useDispatch();
+
+	const updateAuthType = () => {
+		setAuthType(authType === 'login' ? 'register' : 'login');
+	};
+
+	const setEmailCallback = (event) => {
+		setEmail(event.target.value);
+	};
+
+	const setPasswordCallback = (event) => {
+		setPassword(event.target.value);
+	};
+
+	const setPasswordConfirmationCallback = (event) => {
+		setPasswordConfirmation(event.target.value);
+	};
+
+	const redirectToPageCallback = useCallback(() => {
+		history.push(location && location.state ? location.state.from : '/');
+	}, [history]);
+
+	const signIn = useCallback(() => {
+		dispatch(signInThunkCreator(authType, email, password, redirectToPageCallback));
+	}, [authType, email, password, redirectToPageCallback]);
+
+	const handleSubmitClick = () => {
+		if (authType === 'register' && password !== passwordConfirmation) {
+			console.log('Passwords fields are not equal!');
+		}
+
+		signIn(authType, email, password, redirectToPageCallback);
+	};
+
+	return (
+		<div className='container auth-wrapper'>
+			<form className='auth'>
+				<label htmlFor='email'>
+					Email
 					<Input
-						text={passwordConfirmation}
-						inputType={'password'}
-						placeholder={'Your password...'}
-						inputPurpose={'auth'}
-						onChangeCallback={setPasswordConfirmationCallback}
+						text={email}
+						inputType={'email'}
+						placeholder={'yourEmail@.com'}
+						inputBlock={'auth'}
+						onChangeCallback={setEmailCallback}
 					/>
 				</label>
-			)}
-			<Button content='Submit' variant='success' onClickCallback={handleSubmitClick} />
-		</form>
 
-		<Button content={authType === 'login' ? 'Register' : 'Login'} variant='primary' onClickCallback={updateAuthType} />
-	</div>
-);
+				<label htmlFor='password'>
+					Password:
+					<Input
+						text={password}
+						inputType={'password'}
+						placeholder={'Your password...'}
+						inputBlock={'auth'}
+						onChangeCallback={setPasswordCallback}
+					/>
+				</label>
+
+				{authType === 'register' && (
+					<label htmlFor='passwordChecking'>
+						Repeat password:
+						<Input
+							text={passwordConfirmation}
+							inputType={'password'}
+							placeholder={'Your password...'}
+							inputBlock={'auth'}
+							onChangeCallback={setPasswordConfirmationCallback}
+						/>
+					</label>
+				)}
+				<Button content='Submit' variant='success' onClickCallback={handleSubmitClick} />
+			</form>
+
+			<Button content={authType === 'login' ? 'Register' : 'Login'} variant='primary' onClickCallback={updateAuthType} />
+		</div>
+	);
+};
 
 export default Auth;

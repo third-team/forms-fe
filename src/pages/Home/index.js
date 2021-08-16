@@ -1,1 +1,1 @@
-export { default as Home } from './FormsListContainer';
+export { default as Home } from './FormsList';

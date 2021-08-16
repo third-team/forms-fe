@@ -1,1 +1,1 @@
-export { default as FormsListItem } from './FormsListItemAnimate';
+export { default as FormsListItem } from './FormsListItemSlideAnimationWrapper';

@@ -1,1 +1,1 @@
-export { default as SkeletonAnimationFormsList } from './SkeletonFormsList';
+export { default as SkeletonFormsList } from './SkeletonFormsList';

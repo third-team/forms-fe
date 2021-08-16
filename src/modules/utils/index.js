@@ -1,2 +1,3 @@
-export { SkeletonAnimationFormsList } from './SkeletonAnimation/SkeletonFormsList';
-export { SkeletonAnimationForm } from './SkeletonAnimation/SkeletonForm';
+export { SkeletonFormsList } from './SkeletonAnimation';
+export { SkeletonFormEditView } from './SkeletonAnimation';
+export { SkeletonFormPassView } from './SkeletonAnimation';

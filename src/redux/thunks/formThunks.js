@@ -4,9 +4,9 @@ import { initializeFormActionCreator, updateFormTextActionCreator, cleanFormActi
 
 import { errorConsoleLog } from 'utils/errorConsoleLog';
 
-export const initializeFormThunkCreator = (formId, setLoadingFlag) => (dispatch) => {
+export const initializeFormThunkCreator = (formId, setLoadingFlag, viewType) => (dispatch) => {
 	axios
-		.get(`/forms/my/${formId}`)
+		.get(`/forms/${viewType === 'edit' ? 'my/' : ''}${formId}`)
 		.then((response) => {
 			if (response.status === 200) {
 				dispatch(initializeFormActionCreator(response.data.form));

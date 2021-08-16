@@ -1,23 +1,27 @@
+import classnames from 'classnames';
+
 import './Input.scss';
 
 const Input = ({
 	text = '',
 	inputType,
 	placeHolder = '',
-	inputPurpose,
+	inputBlock,
 	classNames = '',
 	onChangeCallback,
 	onChangeCallbackProps = [],
-}) => (
-	<input
-		type={`${inputType}`}
-		placeholder={placeHolder}
-		value={text}
-		className={`input ${inputPurpose}__input ${classNames}`}
-		onChange={(event) => {
-			onChangeCallback(event, ...onChangeCallbackProps);
-		}}
-	/>
-);
+}) => {
+	return (
+		<input
+			type={`${inputType}`}
+			placeholder={placeHolder}
+			value={text}
+			className={classnames('input', `${inputBlock}__input`, classNames)}
+			onChange={(event) => {
+				onChangeCallback(event, ...onChangeCallbackProps);
+			}}
+		/>
+	);
+};
 
 export default Input;
