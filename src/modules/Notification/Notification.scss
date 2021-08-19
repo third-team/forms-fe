@@ -1,0 +1,107 @@
+@import 'styles/main.scss';
+
+.notification {
+	position: relative;
+
+	width: 250px;
+
+	padding: 10px;
+
+	border-radius: 10px;
+
+	&__title {
+		font-size: $font-size-large;
+		font-weight: 600;
+
+		margin-bottom: 10px;
+	}
+
+	&__text {
+		font-size: $font-size-medium;
+	}
+
+	&__button {
+		position: absolute;
+
+		top: 0.25rem;
+		right: 0.25rem;
+
+		padding: 1rem;
+
+		min-width: initial;
+
+		height: 1rem;
+		width: 1rem;
+
+		border: none;
+		border-radius: 50%;
+
+		> img {
+			object-fit: contain;
+		}
+	}
+
+	transition: 0.5s;
+}
+
+@mixin notification-color($color-background, $color-title) {
+	background-color: $color-background;
+
+	.notification__title {
+		color: $color-title;
+	}
+
+	.notification__text {
+		color: lighten($color-title, 15%);
+	}
+
+	.notification__button {
+		&:hover {
+			background-color: lighten($color-background, 25%);
+		}
+	}
+}
+
+.notification-success {
+	@include notification-color(#071107, $color-success);
+}
+
+.notification-warning {
+	@include notification-color(#190f00, $color-warning);
+}
+
+.notification-danger {
+	@include notification-color(#180605, $color-danger);
+}
+
+.notification-primary {
+	@include notification-color(#030e18, $color-primary);
+}
+
+.notification-appear {
+	transform: translateX(500px);
+}
+
+.notification-appear-active {
+	transform: translateX(0);
+}
+
+.notification-enter {
+	transform: translateX(500px);
+}
+
+.notification-enter-active {
+	transform: translateX(0);
+}
+
+.notification-exit {
+	transform: translateX(0);
+}
+
+.notification-exit-active {
+	transform: translateX(500px);
+}
+
+.notification-exit-done {
+	transform: translateX(500px);
+}

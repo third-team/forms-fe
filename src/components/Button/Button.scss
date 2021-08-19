@@ -53,3 +53,7 @@
 .button-danger {
 	@include button-color($color-danger);
 }
+
+.button-warning {
+	@include button-color($color-warning);
+}

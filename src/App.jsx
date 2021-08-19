@@ -8,7 +8,7 @@ import * as userSelector from 'redux/selectors/userSelectors';
 
 import ProtectedRoute from 'components/ProtectedRoute';
 
-import { Header } from 'modules';
+import { Header, NotificationWrapper } from 'modules';
 
 import { Home, Auth, FormEditView, FormPassView } from 'pages';
 
@@ -39,6 +39,8 @@ const App = () => {
 				<ProtectedRoute exact path='/' component={Home} />
 				<ProtectedRoute exact path='/edit/:id' component={FormEditView} viewType='edit' />
 				<ProtectedRoute exact path='/pass/:id' component={FormPassView} viewType='pass' />
+
+				<NotificationWrapper />
 			</>
 		</Switch>
 	);

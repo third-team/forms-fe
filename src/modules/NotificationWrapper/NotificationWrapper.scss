@@ -1,0 +1,28 @@
+.notifications-wrapper {
+	display: flex;
+	flex-direction: column-reverse;
+
+	position: absolute;
+
+	transition: 0.5s;
+
+	padding: 1rem;
+
+	bottom: 2rem;
+	right: 2.25rem;
+
+	max-height: 85vh;
+
+	> * {
+		margin-bottom: 1rem;
+	}
+
+	overflow-x: hidden;
+	overflow-y: scroll;
+
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
