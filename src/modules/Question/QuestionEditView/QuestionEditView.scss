@@ -14,8 +14,6 @@
 			> * {
 				width: 48%;
 			}
-
-			margin-bottom: 1rem;
 		}
 
 		&__input {
@@ -38,6 +36,8 @@
 
 		&__button-line {
 			@include flex(row, initial, initial);
+
+			margin-top: 1rem;
 		}
 	}
 }
