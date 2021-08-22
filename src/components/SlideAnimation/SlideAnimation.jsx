@@ -1,5 +1,5 @@
 import { useState, useLayoutEffect, useRef } from 'react';
-import { Transition } from 'react-transition-group';
+import { CSSTransition } from 'react-transition-group';
 
 import './SlideAnimation.scss';
 
@@ -19,7 +19,7 @@ const SlideAnimation = ({ component: Component, ...props }) => {
 	}, []);
 
 	return (
-		<Transition
+		<CSSTransition
 			nodeRef={targetRef}
 			in={animationState}
 			timeout={500}
@@ -28,9 +28,7 @@ const SlideAnimation = ({ component: Component, ...props }) => {
 				setExitDone(false);
 			}}
 			onEntering={() => {
-				setTimeout(() => {
-					setMaxHeight(scrollHeight.current);
-				}, 0);
+				setMaxHeight(scrollHeight.current);
 			}}
 			onEntered={() => {
 				setMaxHeight('max-content');
@@ -39,24 +37,20 @@ const SlideAnimation = ({ component: Component, ...props }) => {
 				setMaxHeight(targetRef.current.scrollHeight);
 			}}
 			onExiting={() => {
-				setTimeout(() => {
-					setMaxHeight(0);
-				}, 0);
+				setMaxHeight(0);
 			}}
 			onExited={() => {
 				setExitDone(true);
 			}}
 		>
-			{() => (
-				<Component
-					targetRef={targetRef}
-					maxHeight={maxHeight}
-					exitDone={exitDone}
-					setAnimationState={setAnimationState}
-					{...props}
-				/>
-			)}
-		</Transition>
+			<Component
+				targetRef={targetRef}
+				maxHeight={maxHeight}
+				exitDone={exitDone}
+				setAnimationState={setAnimationState}
+				{...props}
+			/>
+		</CSSTransition>
 	);
 };
 
