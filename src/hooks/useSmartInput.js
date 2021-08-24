@@ -1,7 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 
 const useSmartInput = (initialText, updateTextInState) => {
 	const [localText, setLocalText] = useState(initialText);
+
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		setLocalText(initialText);
@@ -19,7 +22,7 @@ const useSmartInput = (initialText, updateTextInState) => {
 		setLocalText(event.target.value);
 
 		timeout.current = setTimeout(() => {
-			updateTextInState(event.target.value, objectsIds, undoTextUpdate);
+			dispatch(updateTextInState(event.target.value, objectsIds, undoTextUpdate));
 		}, 2500);
 	}, []);
 

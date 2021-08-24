@@ -1,7 +1,7 @@
 import { useCallback, memo } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { updateIsCorrectThunkCreator } from 'redux/thunks/answerThunks';
+import { updateIsCorrect } from 'redux/actions/answerActions';
 
 import './AnswerPassView.scss';
 
@@ -10,7 +10,7 @@ const AnswerPassView = ({ questionId, answerId, answerType, answer, isCorrect, t
 
 	const updateIsCorrectInState = useCallback(
 		(event) => {
-			dispatch(updateIsCorrectThunkCreator(questionId, answerId, answerType, event.target.checked));
+			dispatch(updateIsCorrect(questionId, answerId, answerType, event.target.checked));
 		},
 		[questionId, answerId, answerType],
 	);

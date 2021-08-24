@@ -1,24 +1,20 @@
-import { useEffect, useCallback, memo } from 'react';
+import { useCallback, memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { deleteFormThunkCreator } from 'redux/thunks/formsListThunks';
+import { deleteFormStarted } from 'redux/actions/formsListActions';
 
 import './FormsListItem.scss';
 
 import { Button } from 'components';
 
-const FormsListItem = ({ formId, formName, targetRef, maxHeight, exitDone, setAnimationState }) => {
+const FormsListItem = ({ formId, formName, targetRef, maxHeight }) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 
 	const deleteFormInState = useCallback(() => {
-		dispatch(deleteFormThunkCreator(formId));
+		dispatch(deleteFormStarted(formId));
 	}, [formId]);
-
-	useEffect(() => {
-		if (exitDone) deleteFormInState(formId);
-	}, [exitDone]);
 
 	const editForm = () => {
 		history.push({ pathname: `/edit/${formId}` });
@@ -37,13 +33,7 @@ const FormsListItem = ({ formId, formName, targetRef, maxHeight, exitDone, setAn
 				<div className='form-preview__buttons-wrapper'>
 					<Button content='Edit' variant='success' onClickCallback={editForm} />
 
-					<Button
-						content='Delete'
-						variant='danger'
-						classNames='margin-left'
-						onClickCallback={setAnimationState}
-						onClickCallbackProps={[false]}
-					/>
+					<Button content='Delete' variant='danger' classNames='margin-left' onClickCallback={deleteFormInState} />
 				</div>
 			</div>
 		</div>

@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { signInThunkCreator } from 'redux/thunks/userThunks';
+import { signIn } from 'redux/actions/userActions';
 
 import './Auth.scss';
 
@@ -36,16 +36,11 @@ const Auth = ({ history, location }) => {
 		history.push(location && location.state ? location.state.from : '/');
 	}, [history]);
 
-	const signIn = useCallback(() => {
-		dispatch(signInThunkCreator(authType, email, password, redirectToPageCallback));
-	}, [authType, email, password, redirectToPageCallback]);
-
 	const handleSubmitClick = () => {
 		if (authType === 'register' && password !== passwordConfirmation) {
 			console.log('Passwords fields are not equal!');
 		}
-
-		signIn(authType, email, password, redirectToPageCallback);
+		dispatch(signIn(authType, email, password, redirectToPageCallback));
 	};
 
 	return (

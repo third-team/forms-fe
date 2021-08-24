@@ -1,13 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 
-import { initializeFormThunkCreator } from 'redux/thunks/formThunks';
+import { getForm } from 'redux/actions/formActions';
 
 import * as formSelector from 'redux/selectors/formSelectors';
 
-const useFormInitialization = (formIdFormUrl, viewType) => {
-	const [loading, setLoading] = useState(true);
-
+const useFormInitialization = (formIdUrl, viewType) => {
+	const loading = useSelector(formSelector.loading);
 	const formId = useSelector(formSelector.formId);
 	const formName = useSelector(formSelector.formName);
 	const questions = useSelector(formSelector.questions, shallowEqual);
@@ -15,7 +14,7 @@ const useFormInitialization = (formIdFormUrl, viewType) => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(initializeFormThunkCreator(formIdFormUrl, setLoading, viewType));
+		dispatch(getForm(formIdUrl, viewType));
 	}, []);
 
 	return [loading, formId, formName, questions, dispatch];

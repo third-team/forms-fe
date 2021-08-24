@@ -1,12 +1,8 @@
-import { useEffect, useCallback, memo } from 'react';
+import { useCallback, memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSmartInput } from 'hooks';
 
-import {
-	updateAnswerTextThunkCreator,
-	updateIsCorrectThunkCreator,
-	removeAnswerThunkCreator,
-} from 'redux/thunks/answerThunks';
+import { updateAnswerText, updateIsCorrect, removeAnswerStarted } from 'redux/actions/answerActions';
 
 import './AnswerEditView.scss';
 
@@ -14,40 +10,19 @@ import deleteIcon from 'assets/icons/icon-delete.svg';
 
 import { Button, Input } from 'components';
 
-const AnswerEditView = ({
-	questionId,
-	answerId,
-	answerType,
-	answer,
-	isCorrect,
-	targetRef,
-	maxHeight,
-	exitDone,
-	setAnimationState,
-}) => {
+const AnswerEditView = ({ questionId, answerId, answerType, answer, isCorrect, targetRef, maxHeight }) => {
 	const dispatch = useDispatch();
-
-	const updateAnswerTextInState = useCallback((answerText, objectsIds, undoChanges) => {
-		dispatch(updateAnswerTextThunkCreator(answerText, objectsIds, undoChanges));
-	}, []);
 
 	const updateIsCorrectInState = useCallback(
 		(event) => {
-			dispatch(updateIsCorrectThunkCreator(questionId, answerId, answerType, event.target.checked));
+			dispatch(updateIsCorrect(questionId, answerId, answerType, isCorrect, event.target.checked));
 		},
 		[questionId, answerId, answerType],
 	);
 
-	const removeAnswerInState = useCallback(
-		() => dispatch(removeAnswerThunkCreator(questionId, answerId, setAnimationState)),
-		[questionId, answerId, setAnimationState],
-	);
+	const removeAnswerInState = useCallback(() => dispatch(removeAnswerStarted(questionId, answerId)), [questionId, answerId]);
 
-	useEffect(() => {
-		if (exitDone) removeAnswerInState();
-	}, [exitDone]);
-
-	const [localText, updateLocalText] = useSmartInput(answer, updateAnswerTextInState);
+	const [localText, updateLocalText] = useSmartInput(answer, updateAnswerText);
 
 	return (
 		<div
@@ -77,7 +52,7 @@ const AnswerEditView = ({
 					<Button
 						content={<img src={deleteIcon} alt='delete answer' />}
 						variant='danger'
-						onClickCallback={setAnimationState}
+						onClickCallback={removeAnswerInState}
 						onClickCallbackProps={[false]}
 					/>
 				</div>

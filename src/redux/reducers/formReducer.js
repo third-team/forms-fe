@@ -1,42 +1,90 @@
-import { INITIALIZE_FORM, UPDATE_FORM_TEXT, CLEAN_FORM } from 'redux/constants/formConstants';
-import { ADD_QUESTION, UPDATE_QUESTION_TEXT, CHANGE_ANSWER_TYPE, REMOVE_QUESTION } from 'redux/constants/questionConstants';
-import { ADD_ANSWER, UPDATE_ANSWER_TEXT, UPDATE_IS_CORRECT, REMOVE_ANSWER } from 'redux/constants/answerConstants';
+import {
+	GET_FORM_STARTED,
+	GET_FORM_SUCCESS,
+	GET_FORM_FAILURE,
+	UPDATE_FORM_TEXT_SUCCESS,
+	CLEAN_FORM,
+} from 'redux/constants/formConstants';
 
-const formReducer = (state = {}, action) => {
+import {
+	ADD_QUESTION_STARTED,
+	ADD_QUESTION_SUCCESS,
+	ADD_QUESTION_FAILURE,
+	UPDATE_QUESTION_TEXT_SUCCESS,
+	CHANGE_ANSWER_TYPE_SUCCESS,
+	REMOVE_QUESTION_STARTED,
+	REMOVE_QUESTION_SUCCESS,
+	REMOVE_QUESTION_FAILURE,
+} from 'redux/constants/questionConstants';
+
+import {
+	ADD_ANSWER_STARTED,
+	ADD_ANSWER_SUCCESS,
+	ADD_ANSWER_FAILURE,
+	UPDATE_ANSWER_TEXT_SUCCESS,
+	UPDATE_IS_CORRECT_SUCCESS,
+	REMOVE_ANSWER_STARTED,
+	REMOVE_ANSWER_SUCCESS,
+	REMOVE_ANSWER_FAILURE,
+} from 'redux/constants/answerConstants';
+
+const formReducer = (state = { loading: null, _id: undefined, questions: undefined }, action) => {
 	switch (action.type) {
-		case INITIALIZE_FORM:
-			return { ...state, _id: action.form._id, name: action.form.name, questions: action.form.questions };
+		case GET_FORM_STARTED:
+			return { ...state, loading: true };
+		case GET_FORM_SUCCESS:
+			return { ...state, ...action.payload, loading: false };
+		case GET_FORM_FAILURE:
+			return { ...state, loading: false };
 
-		case UPDATE_FORM_TEXT:
-			return { ...state, name: action.name };
+		case UPDATE_FORM_TEXT_SUCCESS:
+			return { ...state, name: action.payload.formName };
 
 		case CLEAN_FORM:
 			return {};
 
-		case ADD_QUESTION:
+		case ADD_QUESTION_STARTED:
 			return {
 				...state,
-				questions: state.questions.concat([
-					{ _id: action.questionId, question: 'Question', answerType: 'checkbox', answers: [] },
-				]),
+				questions: state.questions.concat({
+					_uuid: action.payload.questionUuid,
+					animation: true,
+					question: 'Question',
+					answerType: 'checkbox',
+					answers: [],
+				}),
 			};
-
-		case UPDATE_QUESTION_TEXT:
+		case ADD_QUESTION_SUCCESS:
 			return {
 				...state,
-				questions: state.questions.map((questionItem) =>
-					questionItem._id === action.questionId ? { ...questionItem, question: action.text } : questionItem,
+				questions: state.questions.map((question) =>
+					question._uuid === action.payload.questionUuid ? { ...question, _id: action.payload.questionId } : question,
+				),
+			};
+		case ADD_QUESTION_FAILURE:
+			return {
+				...state,
+				questions: state.questions.map((question) =>
+					question._uuid === action.payload.questionUuid ? { ...question, animation: false } : question,
 				),
 			};
 
-		case CHANGE_ANSWER_TYPE:
+		case UPDATE_QUESTION_TEXT_SUCCESS:
+			return {
+				...state,
+				questions: state.questions.map((questionItem) =>
+					questionItem._id === action.payload.questionId ? { ...questionItem, question: action.payload.text } : questionItem,
+				),
+			};
+
+		case CHANGE_ANSWER_TYPE_SUCCESS:
 			return {
 				...state,
 				questions: state.questions.map((questionItem) => {
-					if (questionItem._id === action.questionId) {
+					if (questionItem._id === action.payload.questionId) {
 						return {
 							...questionItem,
-							answerType: action.answerType,
+							answerType: action.payload.answerType,
 							answers: questionItem.answers.map((answer) => ({ ...answer, isCorrect: false })),
 						};
 					}
@@ -45,34 +93,81 @@ const formReducer = (state = {}, action) => {
 				}),
 			};
 
-		case REMOVE_QUESTION:
+		case REMOVE_QUESTION_STARTED:
 			return {
 				...state,
-				questions: state.questions.filter((questionItem) => questionItem._id !== action.questionId),
+				questions: state.questions.map((question) =>
+					question._id === action.payload.questionId ? { ...question, animation: false } : question,
+				),
+			};
+		case REMOVE_QUESTION_SUCCESS:
+			return {
+				...state,
+				questions: state.questions.filter((questionItem) => questionItem._id !== action.payload.questionId),
+			};
+		case REMOVE_QUESTION_FAILURE:
+			return {
+				...state,
+				questions: state.questions.map((question) =>
+					question._id === action.payload.questionId ? { ...question, animation: true } : question,
+				),
 			};
 
-		case ADD_ANSWER:
+		case ADD_ANSWER_STARTED:
+			return {
+				...state,
+				questions: state.questions.map((questionItem) =>
+					questionItem._id === action.payload.questionId
+						? {
+								...questionItem,
+								answers: questionItem.answers.concat({
+									_uuid: action.payload.answerUuid,
+									animation: true,
+									answer: 'Answer',
+									isCorrect: false,
+								}),
+						  }
+						: questionItem,
+				),
+			};
+		case ADD_ANSWER_SUCCESS:
+			return {
+				...state,
+				questions: state.questions.map((questionItem) =>
+					questionItem._id === action.payload.questionId
+						? {
+								...questionItem,
+								answers: questionItem.answers.map((answer) =>
+									answer._uuid === action.payload.answerUuid ? { ...answer, _id: action.payload.answerId } : answer,
+								),
+						  }
+						: questionItem,
+				),
+			};
+		case ADD_ANSWER_FAILURE:
 			return {
 				...state,
 				questions: state.questions.map((questionItem) =>
 					questionItem._id === action.questionId
 						? {
 								...questionItem,
-								answers: questionItem.answers.concat([{ _id: action.answerId, answer: 'Answer', isCorrect: false }]),
+								answers: questionItem.answers.map((answer) =>
+									answer._uuid === action.payload.answerUuid ? { ...answer, animation: false } : answer,
+								),
 						  }
 						: questionItem,
 				),
 			};
 
-		case UPDATE_ANSWER_TEXT:
+		case UPDATE_ANSWER_TEXT_SUCCESS:
 			return {
 				...state,
 				questions: state.questions.map((questionItem) => {
-					if (questionItem._id === action.questionId) {
+					if (questionItem._id === action.payload.questionId) {
 						return {
 							...questionItem,
 							answers: questionItem.answers.map((answerItem) =>
-								answerItem._id === action.answerId ? { ...answerItem, answer: action.answer } : answerItem,
+								answerItem._id === action.payload.answerId ? { ...answerItem, answer: action.payload.answer } : answerItem,
 							),
 						};
 					}
@@ -80,16 +175,16 @@ const formReducer = (state = {}, action) => {
 				}),
 			};
 
-		case UPDATE_IS_CORRECT:
+		case UPDATE_IS_CORRECT_SUCCESS:
 			return {
 				...state,
 				questions: state.questions.map((questionItem) => {
-					if (questionItem._id === action.questionId) {
+					if (questionItem._id === action.payload.questionId) {
 						return {
 							...questionItem,
 							answers: questionItem.answers.map((answerItem) => {
-								if (answerItem._id === action.answerId) return { ...answerItem, isCorrect: action.checked };
-								return action.answerType === 'checkbox' ? answerItem : { ...answerItem, isCorrect: false };
+								if (answerItem._id === action.payload.answerId) return { ...answerItem, isCorrect: action.payload.checked };
+								return action.payload.answerType === 'checkbox' ? answerItem : { ...answerItem, isCorrect: false };
 							}),
 						};
 					}
@@ -97,14 +192,44 @@ const formReducer = (state = {}, action) => {
 				}),
 			};
 
-		case REMOVE_ANSWER:
+		case REMOVE_ANSWER_STARTED:
 			return {
 				...state,
 				questions: state.questions.map((questionItem) => {
-					if (questionItem._id === action.questionId) {
+					if (questionItem._id === action.payload.questionId) {
 						return {
 							...questionItem,
-							answers: questionItem.answers.filter((answerItem) => answerItem._id !== action.answerId),
+							answers: questionItem.answers.map((answerItem) =>
+								answerItem._id === action.payload.answerId ? { ...answerItem, animation: false } : answerItem,
+							),
+						};
+					}
+					return questionItem;
+				}),
+			};
+		case REMOVE_ANSWER_SUCCESS:
+			return {
+				...state,
+				questions: state.questions.map((questionItem) => {
+					if (questionItem._id === action.payload.questionId) {
+						return {
+							...questionItem,
+							answers: questionItem.answers.filter((answerItem) => answerItem._id !== action.payload.answerId),
+						};
+					}
+					return questionItem;
+				}),
+			};
+		case REMOVE_ANSWER_FAILURE:
+			return {
+				...state,
+				questions: state.questions.map((questionItem) => {
+					if (questionItem._id === action.payload.questionId) {
+						return {
+							...questionItem,
+							answers: questionItem.answers.map((answerItem) =>
+								answerItem._id === action.payload.answerId ? { ...answerItem, animation: true } : answerItem,
+							),
 						};
 					}
 					return questionItem;

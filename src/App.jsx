@@ -2,7 +2,7 @@ import { useEffect, useCallback } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setIsAuthThunkCreator } from 'redux/thunks/userThunks';
+import { setIsAuthSuccess } from 'redux/actions/userActions';
 
 import * as userSelector from 'redux/selectors/userSelectors';
 
@@ -18,7 +18,7 @@ const App = () => {
 	const dispatch = useDispatch();
 
 	const setIsAuth = useCallback((newIsAuth) => {
-		dispatch(setIsAuthThunkCreator(newIsAuth));
+		dispatch(setIsAuthSuccess(newIsAuth));
 	}, []);
 
 	useEffect(() => {

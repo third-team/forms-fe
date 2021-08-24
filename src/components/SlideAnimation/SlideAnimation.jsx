@@ -3,29 +3,24 @@ import { CSSTransition } from 'react-transition-group';
 
 import './SlideAnimation.scss';
 
-const SlideAnimation = ({ component: Component, ...props }) => {
-	const [animationState, setAnimationState] = useState(null);
+const SlideAnimation = ({ component: Component, animation, onExitCallback, ...props }) => {
 	const [maxHeight, setMaxHeight] = useState('initial');
-
-	const [exitDone, setExitDone] = useState(false);
 
 	const scrollHeight = useRef(null);
 	const targetRef = useRef(null);
 
 	useLayoutEffect(() => {
 		scrollHeight.current = targetRef.current.scrollHeight;
-
-		setAnimationState(true);
 	}, []);
 
 	return (
 		<CSSTransition
 			nodeRef={targetRef}
-			in={animationState}
+			in={animation}
 			timeout={500}
+			appear
 			onEnter={() => {
 				setMaxHeight(0);
-				setExitDone(false);
 			}}
 			onEntering={() => {
 				setMaxHeight(scrollHeight.current);
@@ -40,16 +35,10 @@ const SlideAnimation = ({ component: Component, ...props }) => {
 				setMaxHeight(0);
 			}}
 			onExited={() => {
-				setExitDone(true);
+				if (onExitCallback) onExitCallback();
 			}}
 		>
-			<Component
-				targetRef={targetRef}
-				maxHeight={maxHeight}
-				exitDone={exitDone}
-				setAnimationState={setAnimationState}
-				{...props}
-			/>
+			<Component targetRef={targetRef} maxHeight={maxHeight} {...props} />
 		</CSSTransition>
 	);
 };

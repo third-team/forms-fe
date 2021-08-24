@@ -19,12 +19,14 @@ const QuestionEditView = ({ formId, questionId, question, answerType, answers, t
 				{answers.map((answerItem) => (
 					<Answer
 						formId={formId}
+						animation={answerItem.animation}
 						questionId={questionId}
 						answerId={answerItem._id}
 						answerType={answerType}
 						answer={answerItem.answer}
 						isCorrect={answerItem.isCorrect}
-						key={answerItem._id}
+						animationId={answerItem._uuid}
+						key={answerItem._uuid}
 					/>
 				))}
 			</div>

@@ -5,7 +5,7 @@ import { CSSTransition } from 'react-transition-group';
 
 import classnames from 'classnames';
 
-import { deleteNotificationActionCreator } from 'redux/actions/notificationsListActions';
+import { deleteNotification } from 'redux/actions/notificationsListActions';
 
 import './Notification.scss';
 
@@ -21,14 +21,14 @@ const Notification = ({ _id, title, text, variant, delay }) => {
 
 	const dispatch = useDispatch();
 
-	const deleteNotification = () => {
+	const deleteNotificationCallback = () => {
 		clearTimeout(timeout);
 
-		dispatch(deleteNotificationActionCreator(_id));
+		dispatch(deleteNotification(_id));
 	};
 
 	const onExitedCallback = useCallback(() => {
-		deleteNotification();
+		deleteNotificationCallback();
 	}, [_id]);
 
 	useEffect(() => {

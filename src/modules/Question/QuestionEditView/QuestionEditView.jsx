@@ -1,14 +1,10 @@
-import { useEffect, useCallback, memo } from 'react';
+import { useCallback, memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSmartInput } from 'hooks';
 
-import {
-	updateQuestionTextThunkCreator,
-	changeAnswerTypeThunkCreator,
-	removeQuestionThunkCreator,
-} from 'redux/thunks/questionThunks';
+import { updateQuestionText, changeAnswerType, removeQuestionStarted } from 'redux/actions/questionActions';
 
-import { addAnswerThunkCreator } from 'redux/thunks/answerThunks';
+import { addAnswer } from 'redux/actions/answerActions';
 
 import './QuestionEditView.scss';
 
@@ -16,40 +12,25 @@ import { Button, Input } from 'components';
 
 import { AnswerEditView as Answer } from 'modules';
 
-const QuestionEditView = ({
-	formId,
-	questionId,
-	question,
-	answerType,
-	answers,
-	targetRef,
-	maxHeight,
-	exitDone,
-	setAnimationState,
-}) => {
+const QuestionEditView = ({ formId, questionId, question, answerType, answers, targetRef, maxHeight }) => {
 	const dispatch = useDispatch();
 
-	const updateQuestionTextInState = useCallback((questionText, objectsIds, undoTextUpdate) => {
-		dispatch(updateQuestionTextThunkCreator(questionText, objectsIds, undoTextUpdate));
-	}, []);
 	const changeAnswerTypeInState = useCallback(
 		(event) => {
-			dispatch(changeAnswerTypeThunkCreator(formId, questionId, event.target.value));
+			dispatch(changeAnswerType(formId, questionId, answerType, event.target.value));
 		},
 		[formId, questionId, answerType],
 	);
+
 	const removeQuestionInState = useCallback(() => {
-		dispatch(removeQuestionThunkCreator(questionId, setAnimationState));
-	}, [questionId, setAnimationState]);
-	const addAnswerInState = useCallback(() => {
-		dispatch(addAnswerThunkCreator(questionId));
+		dispatch(removeQuestionStarted(questionId));
 	}, [questionId]);
 
-	const [localText, updateLocalText] = useSmartInput(question, updateQuestionTextInState);
+	const addAnswerInState = useCallback(() => {
+		dispatch(addAnswer(questionId));
+	}, [questionId]);
 
-	useEffect(() => {
-		if (exitDone) removeQuestionInState(questionId, setAnimationState);
-	}, [exitDone]);
+	const [localText, updateLocalText] = useSmartInput(question, updateQuestionText);
 
 	return (
 		<div
@@ -85,12 +66,14 @@ const QuestionEditView = ({
 
 				{answers.map((answerItem) => (
 					<Answer
+						animation={answerItem.animation}
 						questionId={questionId}
 						answerId={answerItem._id}
 						answerType={answerType}
 						answer={answerItem.answer}
 						isCorrect={answerItem.isCorrect}
-						key={answerItem._id}
+						animationIds={{ questionId, answerId: answerItem._id }}
+						key={answerItem._uuid}
 					/>
 				))}
 
@@ -103,12 +86,7 @@ const QuestionEditView = ({
 						onClickCallbackProps={[questionId]}
 					/>
 
-					<Button
-						content='Delete question'
-						variant='danger'
-						onClickCallback={setAnimationState}
-						onClickCallbackProps={[false]}
-					/>
+					<Button content='Delete question' variant='danger' onClickCallback={removeQuestionInState} />
 				</div>
 			</div>
 		</div>

@@ -1,25 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 
 import { axios } from 'core';
 
 import { Button } from 'components';
 
-import { setFormsListThunkCreator } from 'redux/thunks/formsListThunks';
+import { getFormsList } from 'redux/actions/formsListActions';
 
 import * as formsListSelector from 'redux/selectors/formsListSelectors';
 
 import { FormsListItem, SkeletonFormsList } from 'modules';
 
 const FormsList = ({ history }) => {
-	const [loading, setLoading] = useState(true);
-
-	const formsList = useSelector(formsListSelector.formsList, shallowEqual);
+	const loading = useSelector(formsListSelector.loading);
+	const forms = useSelector(formsListSelector.forms, shallowEqual);
 
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(setFormsListThunkCreator(setLoading));
+		dispatch(getFormsList());
 	}, []);
 
 	const createForm = () => {
@@ -42,12 +41,22 @@ const FormsList = ({ history }) => {
 
 	if (loading) return <SkeletonFormsList />;
 
+	if (!forms) return null;
+
 	return (
 		<div className='container forms-list'>
-			{formsList.length === 0 ? (
+			{forms.length === 0 ? (
 				<h1>You haven&apos;t created any forms yet... Do you want to create a new one?</h1>
 			) : (
-				formsList.map((item) => <FormsListItem formId={item._id} formName={item.name} key={item._id} />)
+				forms.map((form) => (
+					<FormsListItem
+						formId={form._id}
+						animation={form.animation}
+						formName={form.name}
+						animationIds={{ formId: form._id }}
+						key={form._id}
+					/>
+				))
 			)}
 
 			<Button content='Create Form' variant='primary' classNames='margin-bottom' onClickCallback={createForm} />

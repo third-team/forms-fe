@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
-import { useFormInitialization, useSmartInput } from 'hooks';
+import { useGetForm, useSmartInput } from 'hooks';
 
-import { updateFormTextThunkCreator } from 'redux/thunks/formThunks';
+import { updateFormName } from 'redux/actions/formActions';
 
-import { addQuestionThunkCreator } from 'redux/thunks/questionThunks';
+import { addQuestion } from 'redux/actions/questionActions';
 
 import './FormEditView.scss';
 
@@ -12,21 +12,17 @@ import { Input, Button } from 'components';
 import { SkeletonFormEditView as SkeletonForm, QuestionEditView as Question } from 'modules';
 
 const FormEditView = ({ viewType, ...props }) => {
-	const [loading, formId, formName, questions, dispatch] = useFormInitialization(props.match.params.id, viewType);
-
-	const updateFormTextInState = useCallback((name, objectsIds, undoTextUpdate) => {
-		dispatch(updateFormTextThunkCreator(name, objectsIds, undoTextUpdate));
-	}, []);
+	const [loading, formId, formName, questions, dispatch] = useGetForm(props.match.params.id, viewType);
 
 	const addQuestionInState = useCallback(() => {
-		dispatch(addQuestionThunkCreator(formId));
+		dispatch(addQuestion(formId));
 	}, [formId]);
 
-	const [localText, updateLocalText] = useSmartInput(formName, updateFormTextInState);
+	const [localText, updateLocalText] = useSmartInput(formName, updateFormName);
 
-	if (loading) {
-		return <SkeletonForm />;
-	}
+	if (loading) return <SkeletonForm />;
+
+	if (!questions) return null;
 
 	return (
 		<div className='container form-edit'>
@@ -42,11 +38,13 @@ const FormEditView = ({ viewType, ...props }) => {
 			{questions.map((questionItem) => (
 				<Question
 					formId={formId}
+					animation={questionItem.animation}
 					questionId={questionItem._id}
 					question={questionItem.question}
 					answerType={questionItem.answerType}
 					answers={questionItem.answers}
-					key={questionItem._id}
+					animationIds={{ questionId: questionItem._id }}
+					key={questionItem._uuid}
 				/>
 			))}
 

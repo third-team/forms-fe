@@ -5,21 +5,17 @@ const notificationsListReducer = (state = { notifications: [] }, action) => {
 		case ADD_NOTIFICATION:
 			return {
 				...state,
-				notifications: state.notifications.concat({
-					_id: action._id,
-					title: action.title,
-					text: action.text,
-					variant: action.variant,
-					delay: action.delay,
-				}),
+				notifications: [{ ...action.payload }, ...state.notifications],
 			};
+
 		case DELETE_NOTIFICATION:
 			return {
 				...state,
 				notifications: state.notifications.filter((notification) => {
-					return notification._id !== action.notificationId;
+					return notification._id !== action.payload.notificationId;
 				}),
 			};
+
 		default:
 			return state;
 	}

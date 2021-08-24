@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useFormInitialization } from 'hooks';
+import { useGetForm } from 'hooks';
 
 import './FormPassView.scss';
 
@@ -8,7 +8,7 @@ import { Button } from 'components';
 import { SkeletonFormPassView as SkeletonForm, QuestionPassView as Question } from 'modules';
 
 const FormEditView = ({ viewType, ...props }) => {
-	const [loading, formId, formName, questions] = useFormInitialization(props.match.params.id, viewType);
+	const [loading, formId, formName, questions] = useGetForm(props.match.params.id, viewType);
 
 	const submitForm = useCallback(() => {
 		// const formQuestions = questions.map(({ id: questionId, ...item }) => {
@@ -31,9 +31,9 @@ const FormEditView = ({ viewType, ...props }) => {
 		console.log('submit click!');
 	}, [questions]);
 
-	if (loading) {
-		return <SkeletonForm />;
-	}
+	if (loading) return <SkeletonForm />;
+
+	if (!questions) return null;
 
 	return (
 		<div className='container form-pass'>
@@ -42,11 +42,12 @@ const FormEditView = ({ viewType, ...props }) => {
 			{questions.map((questionItem) => (
 				<Question
 					formId={formId}
+					animation={questionItem.animation}
 					questionId={questionItem._id}
 					question={questionItem.question}
 					answerType={questionItem.answerType}
 					answers={questionItem.answers}
-					key={questionItem._id}
+					key={questionItem._uuid}
 				/>
 			))}
 
