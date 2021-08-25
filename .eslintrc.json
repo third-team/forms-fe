@@ -33,7 +33,7 @@
 		"jsx-quotes": ["warn", "prefer-single"],
 		"object-curly-newline": "off",
 		"no-plusplus": "off",
-		"max-len": ["warn", { "code": 140 }],
+		"max-len": ["warn", { "code": 150 }],
 		"implicit-arrow-linebreak": "off",
 		"function-paren-newline": "off",
 		"jsx-a11y/label-has-associated-control": "off",

@@ -1,4 +1,6 @@
-import { axios, uuid } from 'core';
+import { uuid } from 'core';
+
+import { questionAPI } from 'api';
 
 import { errorConsoleLog } from 'utils/errorConsoleLog';
 
@@ -26,14 +28,8 @@ export const addQuestion = (formId) => (dispatch) => {
 	const questionUuid = uuid();
 	dispatch(addQuestionStarted(questionUuid));
 
-	const requestBody = {
-		formId,
-		question: 'Question',
-		answerType: 'checkbox',
-	};
-
-	axios
-		.post('/questions', requestBody)
+	questionAPI
+		.createQuestion(formId, 'Question', 'checkbox')
 		.then((response) => {
 			if (response.status === 201) {
 				dispatch(addNotification('Success', 'Question was created successfully!', 'success'));
@@ -56,8 +52,8 @@ const updateQuestionTextSuccess = (questionId, text) => ({
 });
 
 export const updateQuestionText = (question, objectsIds, undoTextUpdate) => (dispatch) => {
-	axios
-		.put(`/questions/${objectsIds.questionId}`, { ...objectsIds, question })
+	questionAPI
+		.updateQuestionText(question, objectsIds)
 		.then((response) => {
 			if (response.status === 200) {
 				dispatch(addNotification('Success', 'Question text was updated successfully!', 'success'));
@@ -85,8 +81,8 @@ const changeAnswerTypeSuccess = (questionId, answerType) => ({
 export const changeAnswerType = (formId, questionId, oldAnswerType, answerType) => (dispatch) => {
 	dispatch(changeAnswerTypeSuccess(questionId, answerType));
 
-	axios
-		.put(`/questions/${questionId}`, { formId, answerType })
+	questionAPI
+		.changeAnswerType(formId, questionId, answerType)
 		.then((response) => {
 			if (response.status === 200) {
 				dispatch(addNotification('Success', 'Question answertype was updated successfully!', 'success'));
@@ -107,8 +103,7 @@ const removeQuestionFailure = (questionId) => ({ type: REMOVE_QUESTION_FAILURE, 
 
 // prettier-ignore
 export const removeQuestion = ({ questionId }) =>	(dispatch) => {
-	axios
-		.delete(`/questions/${questionId}`)
+	questionAPI.removeQuestion(questionId)
 		.then((response) => {
 			if (response.status === 200) {
 				dispatch(addNotification('Success', 'Question was removed successfully!', 'success'));

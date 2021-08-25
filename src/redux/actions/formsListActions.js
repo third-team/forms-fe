@@ -1,4 +1,4 @@
-import { axios } from 'core';
+import { formsListAPI } from 'api';
 
 import { errorConsoleLog } from 'utils/errorConsoleLog';
 
@@ -20,8 +20,8 @@ const getFormsListFailure = () => ({ type: GET_FORMS_LIST_FAILURE });
 export const getFormsList = () => (dispatch) => {
 	dispatch(getFormsListStarted());
 
-	axios
-		.get('/forms/my')
+	formsListAPI
+		.getForms()
 		.then((response) => {
 			if (response.status === 200) {
 				if (response.data) {
@@ -48,8 +48,7 @@ const deleteFormFailure = (formId) => ({ type: DELETE_FORM_FAILURE, payload: { f
 
 // prettier-ignore
 export const deleteForm = ({formId}) => (dispatch) => {
-	axios
-		.delete(`/forms/${formId}`)
+	formsListAPI.removeForm(formId)
 		.then((response) => {
 			if (response.status === 200) {
 				dispatch(addNotification('Success', 'Form was deleted successfully!', 'success'));

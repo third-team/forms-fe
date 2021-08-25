@@ -1,4 +1,6 @@
-import { axios, uuid } from 'core';
+import { uuid } from 'core';
+
+import { answerAPI } from 'api';
 
 import { errorConsoleLog } from 'utils/errorConsoleLog';
 
@@ -27,14 +29,8 @@ export const addAnswer = (questionId) => (dispatch) => {
 
 	dispatch(addAnswerStarted(questionId, answerUuid));
 
-	const requestBody = {
-		answer: 'Answer',
-		isCorrect: false,
-		questionId,
-	};
-
-	axios
-		.post('/answers', requestBody)
+	answerAPI
+		.createAnswer('Answer', false, questionId)
 		.then((response) => {
 			if (response.status === 201) {
 				dispatch(addNotification('Success', 'Answer was created successfully!', 'success'));
@@ -61,8 +57,8 @@ const updateAnswerTextSuccess = (questionId, answerId, answer) => ({
 });
 
 export const updateAnswerText = (answer, objectsIds, undoTextUpdate) => (dispatch) => {
-	axios
-		.put(`/answers/${objectsIds.answerId}`, { ...objectsIds, answer })
+	answerAPI
+		.updateAnswerText(answer, objectsIds)
 		.then((response) => {
 			if (response.status === 200) {
 				dispatch(addNotification('Success', 'Answer text was updated successfully!', 'success'));
@@ -92,8 +88,8 @@ const updateIsCorrectSuccess = (questionId, answerId, answerType, checked) => ({
 export const updateIsCorrect = (questionId, answerId, answerType, oldChecked, checked) => (dispatch) => {
 	dispatch(updateIsCorrectSuccess(questionId, answerId, answerType, checked));
 
-	axios
-		.put(`/answers/${answerId}`, { questionId, isCorrect: checked })
+	answerAPI
+		.updateIsCorrect(questionId, answerId, checked)
 		.then((response) => {
 			if (response.status === 200) {
 				dispatch(addNotification('Success', 'Answer isCorrect was updated successfully!', 'success'));
@@ -116,8 +112,7 @@ const removeAnswerFailure = (questionId) => ({ type: REMOVE_ANSWER_FAILURE, payl
 
 // prettier-ignore
 export const removeAnswer = ({questionId, answerId}) => (dispatch) => {
-	axios
-		.delete(`/answers/${answerId}`)
+	answerAPI.removeAnswer(answerId)
 		.then((response) => {
 			if (response.status === 200) {
 				dispatch(addNotification('Success', 'Answer was removed successfully!', 'success'));

@@ -1,4 +1,5 @@
 import { axios } from 'core';
+import { authAPI } from 'api';
 
 import { errorConsoleLog } from 'utils/errorConsoleLog';
 
@@ -13,8 +14,8 @@ const setIsAuthFailure = () => ({ type: SET_IS_AUTH_FAILURE });
 export const signIn = (authType, email, password, redirectToPageCallback) => (dispatch) => {
 	dispatch(setIsAuthStarted());
 
-	axios
-		.post(`/${authType}`, { email, password })
+	authAPI
+		.auth(authType, email, password)
 		.then((response) => {
 			if (response.status === 200) {
 				axios.updateToken(response.data.token);

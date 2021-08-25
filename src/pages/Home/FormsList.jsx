@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 
-import { axios } from 'core';
+import { formsListAPI } from 'api';
 
 import { Button } from 'components';
 
@@ -22,11 +22,8 @@ const FormsList = ({ history }) => {
 	}, []);
 
 	const createForm = () => {
-		axios
-			.post('/forms', {
-				name: 'Form name',
-				questions: [{ question: 'Question', answerType: 'checkbox', answers: [{ answer: 'Answer', isCorrect: false }] }],
-			})
+		formsListAPI
+			.createForm()
 			.then((response) => {
 				if (response.status === 201) {
 					history.push({ pathname: `/edit/${response.data.formId}`, state: { creator: true } });

@@ -4,6 +4,7 @@
 		"module": "es6",
 		"baseUrl": "./src",
 		"paths": {
+			"api": ["./src/api/*"],
 			"assets": ["./src/assets/*"],
 			"components": ["./src/components/*"],
 			"core": ["./src/core/*"],
